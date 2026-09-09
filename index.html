@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+
+<!--
+  CHO HYUNGWOO — ENGINEERING ARCHIVE
+
+  Portfolio / Study 두 모드를 한 사이트에서 전환한다.
+  HTML = 구조와 내용 / style.css = 디자인 / app.js = 모드·테마 전환.
+
+  UI 문법은 두 가지뿐이다.
+    Card : 프로젝트, 스터디 주제
+    List : 저니, 아카이브, 문서, 노트, 읽는 책
+
+  카드와 리스트 항목은 하나씩만 두었다. 복사해서 늘린다.
+  href="#" 와 data-todo 는 실제 링크가 생기면 함께 지운다.
+  헤더와 푸터는 assets/js/components.js 에서 한 번에 관리한다.
+-->
+
+<html lang="ko" data-theme="light" data-mode="portfolio">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>조형우 — Engineering Archive</title>
+
+  <meta
+    name="description"
+    content="프로젝트, 기술 실험, 학습 기록을 정리한 개인 Engineering Archive.">
+
+  <meta property="og:title" content="조형우 — Engineering Archive">
+  <meta
+    property="og:description"
+    content="프로젝트, 기술 실험, 학습 기록을 정리한 개인 Engineering Archive.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://joheoungwoo.github.io/">
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <div id="site-header" data-home="true"></div>
+  <script src="./assets/js/components.js"></script>
+
+
+  <main>
+
+    <!-- ==============================
+         PORTFOLIO
+    =============================== -->
+
+    <div class="mode-panel portfolio-panel">
+
+      <!-- HERO -->
+
+      <section class="hero container">
+
+        <p class="eyebrow">ENGINEERING · PRODUCT · AI</p>
+
+        <h1>
+          기술로 실제 문제를<br>
+          해결하는 개발자<br>
+          조형우입니다.
+        </h1>
+
+        <p class="lead">
+          전기기사 수험생을 위한 학습 플랫폼을 만들어 운영하고 있습니다.
+          로컬 GPU 서버에 AI 스택을 직접 구축해 서비스에 연결합니다.
+        </p>
+
+        <a href="#projects" class="primary-link">
+          View projects →
+        </a>
+
+      </section>
+
+
+      <!-- PROJECTS -->
+
+      <section id="projects" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">SELECTED WORK</h2>
+          <a href="#" data-todo>All projects →</a>
+        </header>
+
+        <div class="card-grid">
+
+          <a class="card" href="./projects/electrician.html">
+            <span class="card-number">01</span>
+
+            <h3>전기기사닷컴</h3>
+
+            <p>전기기사 필기 학습 플랫폼. 기출문항 파이프라인과 오답 기반 추천을 직접 설계하고 운영 중입니다.</p>
+
+            <small>Education · AI · Product</small>
+
+            <span class="card-link">View case study →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">02</span>
+
+            <h3>Private AI infrastructure</h3>
+
+            <p>단일 GPU 서버에서 LLM·TTS·이미지 생성을 컨테이너로 격리 운용하는 자체 호스팅 환경입니다.</p>
+
+            <small>Docker · GPU · Infrastructure</small>
+
+            <span class="card-link">View case study →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">03</span>
+
+            <h3>Unified AI control API</h3>
+
+            <p>흩어진 추론 서비스를 FastAPI 제어 계층 하나로 묶어 호출 경로와 GPU 점유를 일원화했습니다.</p>
+
+            <small>FastAPI · Backend · Architecture</small>
+
+            <span class="card-link">View case study →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">04</span>
+
+            <h3>Growth experiments</h3>
+
+            <p>콘텐츠와 서비스 지표를 가설 단위로 검증하고, 실패한 실험도 그대로 남겨 둔 기록 묶음입니다.</p>
+
+            <small>Data · Product · Growth</small>
+
+            <span class="card-link">View case study →</span>
+          </a>
+
+          <!-- 카드 복사해서 추가. 최대 6개. -->
+
+        </div>
+
+      </section>
+
+
+      <!-- JOURNEY -->
+
+      <section id="journey" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">MY JOURNEY</h2>
+        </header>
+
+        <div class="list">
+
+          <div class="list-item">
+            <span class="col-a">2024</span>
+            <strong class="col-b">BUILD</strong>
+            <p class="col-c">직접 만들어보는 단계</p>
+          </div>
+
+          <div class="list-item">
+            <span class="col-a">2025</span>
+            <strong class="col-b">OPERATE</strong>
+            <p class="col-c">실제 서비스를 운영하는 단계</p>
+          </div>
+
+          <div class="list-item">
+            <span class="col-a">2026</span>
+            <strong class="col-b">CONNECT <em class="tag">CURRENT</em></strong>
+            <p class="col-c">AI와 서비스를 연결하는 단계</p>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ARCHIVE -->
+
+      <section id="archive" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">FROM THE ARCHIVE</h2>
+          <a href="#" data-todo>All →</a>
+        </header>
+
+        <div class="list">
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.09</span>
+            <span class="col-b">EXPERIMENT</span>
+            <p class="col-c">쇼츠에서 롱폼으로 넘어오는 유입 측정</p>
+            <span class="col-d">48h, 전환 1.2%</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.09</span>
+            <span class="col-b">ENGINEERING</span>
+            <p class="col-c">AI 서비스를 Docker 내부 네트워크로 격리한 이유</p>
+            <span class="col-d">—</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.08</span>
+            <span class="col-b">EXPERIMENT</span>
+            <p class="col-c">한국어 TTS 모델 7종 라이선스·품질 비교</p>
+            <span class="col-d">2종만 상용 가능</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.08</span>
+            <span class="col-b is-accent">LEARNING</span>
+            <p class="col-c">Java #20 JVM 구조와 GC</p>
+            <span class="col-d">—</span>
+          </a>
+
+          <!-- 항목 복사해서 추가. 결과가 없으면 — 로 채운다. -->
+
+        </div>
+
+      </section>
+
+
+      <!-- DOCUMENTS -->
+
+      <section id="documents" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">DOCUMENTS</h2>
+          <a href="#" data-todo>All documents →</a>
+        </header>
+
+        <div class="list">
+
+          <div class="list-item is-block">
+            <span class="col-a">2026 · Product analysis / UX</span>
+            <h3 class="col-c">전기기사닷컴 학습 흐름 UX 점검</h3>
+            <p class="col-c">이탈 구간 4곳을 찾고 개선안을 정리한 문서</p>
+            <a class="col-d" href="#" data-todo>View document →</a>
+          </div>
+
+          <div class="list-item is-block">
+            <span class="col-a">2026 · Architecture / Infrastructure</span>
+            <h3 class="col-c">로컬 AI 인프라 설계서</h3>
+            <p class="col-c">컨테이너 격리와 GPU 할당 정책을 정리한 설계 문서</p>
+            <a class="col-d" href="#" data-todo>PDF →</a>
+          </div>
+
+          <div class="list-item is-block">
+            <span class="col-a">2026 · AI / Research</span>
+            <h3 class="col-c">한국어 TTS 모델 평가 보고</h3>
+            <p class="col-c">라이선스·품질·GPU 요구사항을 축별로 비교한 조사</p>
+            <a class="col-d" href="#" data-todo>PDF →</a>
+          </div>
+
+          <!-- PDF 가 있으면 링크 문구를 PDF → 로 바꾼다. -->
+
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- ==============================
+         STUDY
+    =============================== -->
+
+    <div class="mode-panel study-panel">
+
+      <!-- HERO -->
+
+      <section class="hero container">
+
+        <p class="eyebrow">STUDY LOG</p>
+
+        <h1>
+          배운 것을 순서대로<br>
+          쌓아 두는 곳입니다.
+        </h1>
+
+        <p class="lead">
+          언어와 도구별로 학습 순서를 정하고 한 편씩 정리합니다.
+          끝난 것과 진행 중인 것을 구분해 그대로 표시합니다.
+        </p>
+
+        <div class="stats">
+
+          <div>
+            <strong>47</strong>
+            <span>NOTES</span>
+          </div>
+
+          <div>
+            <strong>2026.09</strong>
+            <span>LAST UPDATED</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- TOPICS -->
+
+      <section id="topics" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">STUDY AREAS</h2>
+          <a href="#" data-todo>All topics →</a>
+        </header>
+
+        <div class="card-grid">
+
+          <a class="card" href="./study/java.html">
+            <span class="card-number">20 notes</span>
+
+            <h3>Java</h3>
+
+            <p>기본 문법부터 JVM 구조와 GC까지 세 단계로 정리한 완결 시리즈입니다.</p>
+
+            <span class="bar">
+              <i style="flex:2"></i>
+              <i style="flex:11"></i>
+              <i style="flex:7"></i>
+            </span>
+
+            <small>LV0 2 · LV2 11 · LV3 7</small>
+
+            <span class="card-link">Browse series →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">16 notes</span>
+
+            <h3>GOF patterns</h3>
+
+            <p>생성·구조·행위 패턴을 실제 코드에 적용해 가며 정리했습니다.</p>
+
+            <span class="bar">
+              <i style="flex:5"></i>
+              <i style="flex:6"></i>
+              <i style="flex:5"></i>
+            </span>
+
+            <small>생성 5 · 구조 6 · 행위 5</small>
+
+            <span class="card-link">Browse series →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">4 notes</span>
+
+            <h3>Git</h3>
+
+            <p>CLI 세팅부터 브랜치 전략과 자동화까지 협업에 필요한 것 위주로 정리 중입니다.</p>
+
+            <small>진행 중</small>
+
+            <span class="card-link">Browse series →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">3 notes</span>
+
+            <h3>Linux</h3>
+
+            <p>서버 운영에 필요한 명령어와 권한·프로세스 개념을 확인하며 정리 중입니다.</p>
+
+            <small>진행 중</small>
+
+            <span class="card-link">Browse series →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">3 notes</span>
+
+            <h3>C</h3>
+
+            <p>자료형과 입출력 버퍼 등 저수준 동작을 직접 확인하며 정리 중입니다.</p>
+
+            <small>진행 중</small>
+
+            <span class="card-link">Browse series →</span>
+          </a>
+
+          <a class="card" href="#" data-todo>
+            <span class="card-number">1 note</span>
+
+            <h3>Neo4j</h3>
+
+            <p>그래프 DB 도입을 검토하며 설치와 초기 설정부터 시작했습니다.</p>
+
+            <small>시작 단계</small>
+
+            <span class="card-link">Browse series →</span>
+          </a>
+
+          <!-- 카드 복사해서 추가. 최대 6개. -->
+
+        </div>
+
+        <p class="note">
+          준비 중 · Spring Boot / JPA / MyBatis / React / JavaScript /
+          Unity / C# / Python / FastAPI / Database / HTML·CSS
+        </p>
+
+      </section>
+
+
+      <!-- NOTES -->
+
+      <section id="notes" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">RECENT NOTES</h2>
+          <a href="#" data-todo>All →</a>
+        </header>
+
+        <div class="list">
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.09</span>
+            <span class="col-b is-accent">JAVA</span>
+            <p class="col-c">#20 JVM 구조와 GC</p>
+            <span class="col-d">LV3</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.09</span>
+            <span class="col-b is-accent">GIT</span>
+            <p class="col-c">#4 프로젝트 관리 (Flow + 자동화)</p>
+            <span class="col-d">—</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.09</span>
+            <span class="col-b is-accent">JAVA</span>
+            <p class="col-c">#19 네트워크 프로그래밍 기초</p>
+            <span class="col-d">LV3</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.08</span>
+            <span class="col-b is-accent">NEO4J</span>
+            <p class="col-c">#0 설치와 초기 설정</p>
+            <span class="col-d">LV0</span>
+          </a>
+
+          <a class="list-item" href="#" data-todo>
+            <span class="col-a">2026.08</span>
+            <span class="col-b is-accent">LINUX</span>
+            <p class="col-c">#3 파일 권한과 프로세스</p>
+            <span class="col-d">LV0</span>
+          </a>
+
+          <!-- 항목 복사해서 추가. -->
+
+        </div>
+
+      </section>
+
+
+      <!-- READING -->
+
+      <section id="reading" class="section container">
+
+        <header class="section-header">
+          <h2 class="eyebrow">READING</h2>
+        </header>
+
+        <div class="list">
+
+          <div class="list-item">
+            <p class="col-c">Designing Data-Intensive Applications</p>
+            <span class="col-d">7 / 12 ch</span>
+          </div>
+
+          <div class="list-item">
+            <p class="col-c">모던 자바 인 액션</p>
+            <span class="col-d">4 / 21 ch</span>
+          </div>
+
+          <div class="list-item">
+            <p class="col-c">Head First Design Patterns</p>
+            <span class="col-d">완독</span>
+          </div>
+
+          <!-- 진행률이 명확할 때만 챕터 수를 적는다. -->
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <div id="site-footer"></div>
+
+  <script src="./assets/js/app.js"></script>
+
+</body>
+</html>

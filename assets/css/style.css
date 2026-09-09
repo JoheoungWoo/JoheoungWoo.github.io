@@ -1,0 +1,730 @@
+/* ============================================================
+   CHO HYUNGWOO — ENGINEERING ARCHIVE
+
+   1. 토큰
+   2. 기초
+   3. 레이아웃
+   4. 헤더
+   5. 히어로
+   6. 카드
+   7. 리스트
+   8. 푸터
+   9. 모바일
+============================================================ */
+
+
+/* 1. 토큰 ---------------------------------------------- */
+
+:root {
+  --bg: #F8F9FB;
+  --surface: #FFFFFF;
+
+  --text: #111318;
+  --text-2: #5F6470;
+  --text-3: #8A8F9A;
+
+  --line: rgba(0, 0, 0, 0.09);
+  --line-2: rgba(0, 0, 0, 0.13);
+
+  --accent: #315EF5;
+  --accent-line: rgba(49, 94, 245, 0.40);
+  --track: rgba(0, 0, 0, 0.10);
+
+  --dark: #0C111B;
+  --dark-line: #1E2634;
+  --dark-text: #F8F9FB;
+  --dark-text-2: #A7B0C0;
+
+  --max: 940px;
+  --radius: 12px;
+
+  --sans:
+    "Pretendard Variable", Pretendard,
+    -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Segoe UI",
+    sans-serif;
+
+  --mono:
+    ui-monospace, SFMono-Regular,
+    Menlo, Consolas, monospace;
+}
+
+[data-theme="dark"] {
+  --bg: #0C111B;
+  --surface: #111826;
+
+  --text: #F8F9FB;
+  --text-2: #A7B0C0;
+  --text-3: #6B7382;
+
+  --line: rgba(255, 255, 255, 0.10);
+  --line-2: rgba(255, 255, 255, 0.16);
+
+  --accent: #5B82F7;
+  --accent-line: rgba(91, 130, 247, 0.45);
+  --track: rgba(255, 255, 255, 0.12);
+
+  --dark: #070B12;
+}
+
+
+/* 2. 기초 ---------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* 아직 목적지가 없는 링크. href 를 채우면서 data-todo 를 지운다. */
+
+[data-todo] {
+  cursor: default;
+}
+
+.section-header a[data-todo],
+.footer-links a[data-todo] {
+  opacity: 0.45;
+}
+
+
+/* 3. 레이아웃 ------------------------------------------ */
+
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.section {
+  padding: 42px 32px;
+  border-top: 1px solid var(--line);
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+.section-header a {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.eyebrow {
+  margin: 0;
+
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.11em;
+  color: var(--text-3);
+}
+
+.note {
+  margin: 16px 0 0;
+
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-3);
+}
+
+/* 모드 전환. 패널과 nav 를 같은 규칙으로 처리한다. */
+
+.mode-panel,
+.nav {
+  display: none;
+}
+
+[data-mode="portfolio"] .portfolio-panel,
+[data-mode="study"] .study-panel {
+  display: block;
+}
+
+[data-mode="portfolio"] .nav-portfolio,
+[data-mode="study"] .nav-study {
+  display: flex;
+}
+
+
+/* 4. 헤더 ---------------------------------------------- */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.brand {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.nav {
+  gap: 16px;
+  margin-left: auto;
+
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.nav a:hover {
+  color: var(--text);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mode-switch {
+  display: flex;
+  overflow: hidden;
+
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+
+.mode-switch button {
+  padding: 5px 12px;
+
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.mode-switch button[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+
+#theme-toggle {
+  padding: 5px 9px;
+
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+
+/* 5. 히어로 -------------------------------------------- */
+
+.hero {
+  padding-top: 72px;
+  padding-bottom: 60px;
+}
+
+.hero h1 {
+  margin: 16px 0 0;
+
+  font-size: 34px;
+  line-height: 1.36;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  max-width: 52ch;
+  margin: 20px 0 0;
+
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+
+.primary-link {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 9px 17px;
+
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 6px;
+
+  font-size: 13.5px;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 38px;
+
+  margin-top: 32px;
+}
+
+.stats strong {
+  display: block;
+
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.stats span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+}
+
+
+/* 6. 카드 ---------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 180px;
+  padding: 20px;
+
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+}
+
+.card-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.card h3 {
+  margin: 10px 0 7px;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.card p {
+  margin: 0 0 14px;
+
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.card small {
+  margin-bottom: 16px;
+
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.card-link {
+  margin-top: auto;
+  padding-top: 14px;
+
+  border-top: 1px solid var(--line);
+
+  font-size: 12.5px;
+}
+
+.card:not([data-todo]):hover .card-link {
+  color: var(--accent);
+}
+
+/* 진행 막대. 텍스트 메타와 함께 쓴다. */
+
+.bar {
+  display: flex;
+  gap: 4px;
+
+  margin: 0 0 12px;
+}
+
+.bar i {
+  display: block;
+  height: 3px;
+
+  background: var(--accent);
+}
+
+.bar i.empty {
+  background: var(--track);
+}
+
+
+/* 7. 리스트 -------------------------------------------- */
+
+.list-item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.list .list-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.list-item p {
+  margin: 0;
+}
+
+.col-a {
+  flex: 0 0 auto;
+  min-width: 58px;
+
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.col-b {
+  flex: 0 0 auto;
+  min-width: 96px;
+
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.col-b.is-accent {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+}
+
+.col-c {
+  flex: 1;
+  min-width: 0;
+
+  font-size: 14px;
+}
+
+.col-d {
+  flex: 0 0 auto;
+  margin-left: auto;
+
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+/* 문서처럼 여러 줄이 필요한 항목만 세로로 쌓는다. */
+
+.list-item.is-block {
+  display: block;
+  padding: 20px 0;
+}
+
+.is-block h3 {
+  margin: 7px 0 6px;
+
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+.is-block .col-d {
+  display: inline-block;
+  margin: 11px 0 0;
+
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.tag {
+  margin-left: 8px;
+  padding: 1px 5px;
+
+  border: 1px solid var(--accent-line);
+  border-radius: 3px;
+
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+
+/* 8. 푸터 ---------------------------------------------- */
+
+.footer {
+  margin-top: 20px;
+  padding: 52px 0 36px;
+
+  background: var(--dark);
+  color: var(--dark-text);
+}
+
+.footer .eyebrow {
+  color: var(--dark-text-2);
+}
+
+.footer h2 {
+  margin: 14px 0 10px;
+
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.footer p {
+  max-width: 50ch;
+  margin: 0 0 32px;
+
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--dark-text-2);
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+
+  padding-top: 24px;
+  border-top: 1px solid var(--dark-line);
+
+  font-size: 12.5px;
+  color: var(--dark-text-2);
+}
+
+
+/* 8b. 상세 페이지 -------------------------------------- */
+
+.article {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 32px 72px;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 28px;
+
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.article h1 {
+  margin: 14px 0 0;
+
+  font-size: 30px;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.article .summary {
+  margin: 18px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent-line);
+
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+
+.article h2 {
+  margin: 46px 0 12px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+
+.article p,
+.article li {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text);
+}
+
+.article ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.article li {
+  margin-bottom: 6px;
+}
+
+.article figure {
+  margin: 24px 0 8px;
+  padding: 20px;
+
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+}
+
+.article figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.article figcaption {
+  margin-top: 14px;
+
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.meta-table {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 10px 20px;
+
+  margin-top: 24px;
+}
+
+.meta-table dt {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.meta-table dd {
+  margin: 0;
+  font-size: 14px;
+}
+
+.learned {
+  margin-top: 20px;
+  padding: 20px;
+
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+
+@media (max-width: 640px) {
+
+  .article {
+    padding: 40px 20px 56px;
+  }
+
+  .article h1 {
+    font-size: 25px;
+  }
+
+  .meta-table {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+
+  .meta-table dd {
+    margin-bottom: 12px;
+  }
+}
+
+
+/* 9. 모바일 -------------------------------------------- */
+
+@media (max-width: 640px) {
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .section {
+    padding: 32px 20px;
+  }
+
+  .nav {
+    display: none !important;
+  }
+
+  .hero {
+    padding-top: 52px;
+    padding-bottom: 44px;
+  }
+
+  .hero h1 {
+    font-size: 27px;
+  }
+
+  .stats {
+    gap: 26px;
+  }
+
+  .list-item {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  .col-c {
+    order: 3;
+    flex: 1 0 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
