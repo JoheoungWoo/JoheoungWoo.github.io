@@ -18,7 +18,9 @@ GitHub Pages 정적 사이트이며 빌드 도구를 쓰지 않습니다. 파일
 │  ├─ css/style.css              디자인 전부
 │  ├─ js/components.js           공통 헤더 · 푸터
 │  ├─ js/app.js                  모드 · 테마 전환
-│  ├─ data/site-data.js          HOME 화면 데이터
+│  ├─ data/portfolio-data.js     프로젝트와 저니 데이터
+│  ├─ data/archive-data.js       아카이브와 문서 허브 데이터
+│  ├─ data/study-data.js         학습 데이터
 │  └─ favicon.svg
 │
 ├─ projects/                     프로젝트 상세
@@ -51,10 +53,12 @@ Notion API 토큰은 정적 사이트 JavaScript 에 넣지 않습니다. 자동
 | 색상, 폰트, 여백 | `assets/css/style.css` | `:root` 블록 |
 | 헤더 nav 항목 | `assets/js/components.js` | `navPortfolio` / `navStudy` 배열 |
 | 푸터 소개, 링크 | `assets/js/components.js` | `profile` 객체 |
-| HOME 내용 | `assets/data/site-data.js` | `portfolio` / `study` |
+| 프로젝트, 저니 | `assets/data/portfolio-data.js` | `hero` / `projects` / `journey` |
+| 아카이브, 문서 허브 | `assets/data/archive-data.js` | `boundary` / `archive` / `documents` |
+| 학습 영역 | `assets/data/study-data.js` | `hero` / `topics` / `notes` / `reading` |
 
 헤더와 푸터는 모든 페이지가 `components.js` 하나를 공유합니다. 한 곳만 고치면 전체에 반영됩니다.
-HOME 은 `index.html` 에 구조만 두고 `site-data.js` 를 읽어서 화면을 채웁니다.
+HOME 은 `index.html` 에 구조만 두고 `assets/data/*-data.js` 파일들을 읽어서 화면을 채웁니다.
 
 ---
 

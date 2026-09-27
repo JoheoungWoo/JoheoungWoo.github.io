@@ -4,7 +4,7 @@
   CHO HYUNGWOO - ENGINEERING ARCHIVE
 
   이 파일은 화면 구조만 둔다.
-  실제 홈 데이터는 assets/data/site-data.js 에서 읽어온다.
+  실제 홈 데이터는 assets/data/*-data.js 에서 읽어온다.
   내부 자료, 원문, 실험 로그, PDF 는 public GitHub 에 올리지 않는다.
 -->
 
@@ -14,16 +14,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>조형우 - Engineering Archive</title>
+  <title>조형우 - 작업과 학습 기록</title>
 
   <meta
     name="description"
-    content="프로젝트와 학습 기록을 정리하는 개인 Engineering Archive.">
+    content="프로젝트와 학습 기록을 정리하는 개인 사이트.">
 
-  <meta property="og:title" content="조형우 - Engineering Archive">
+  <meta property="og:title" content="조형우 - 작업과 학습 기록">
   <meta
     property="og:description"
-    content="프로젝트와 학습 기록을 정리하는 개인 Engineering Archive.">
+    content="프로젝트와 학습 기록을 정리하는 개인 사이트.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://joheoungwoo.github.io/">
 
@@ -50,8 +50,8 @@
 
       <section id="projects" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">SELECTED WORK</h2>
-          <a href="#" data-todo>All projects →</a>
+          <h2 class="eyebrow">PROJECTS</h2>
+          <a href="#" data-todo>전체 보기 →</a>
         </header>
 
         <div class="card-grid" data-render="projects"></div>
@@ -59,7 +59,7 @@
 
       <section id="journey" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">MY JOURNEY</h2>
+          <h2 class="eyebrow">JOURNEY</h2>
         </header>
 
         <div class="list" data-render="journey"></div>
@@ -67,8 +67,8 @@
 
       <section id="archive" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">ARCHIVE BOUNDARY</h2>
-          <a href="#" data-todo>Notion archive →</a>
+          <h2 class="eyebrow">ARCHIVE</h2>
+          <a href="#" data-todo>Notion 기록 →</a>
         </header>
 
         <div data-render="archiveBoundary"></div>
@@ -77,8 +77,8 @@
 
       <section id="documents" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">DOCUMENT HUB</h2>
-          <a href="#" data-todo>Notion documents →</a>
+          <h2 class="eyebrow">DOCUMENTS</h2>
+          <a href="#" data-todo>Notion 문서 →</a>
         </header>
 
         <div class="list" data-render="documents"></div>
@@ -93,8 +93,8 @@
 
       <section id="topics" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">STUDY AREAS</h2>
-          <a href="#" data-todo>All topics →</a>
+          <h2 class="eyebrow">STUDY TOPICS</h2>
+          <a href="#" data-todo>전체 보기 →</a>
         </header>
 
         <div class="card-grid" data-render="topics"></div>
@@ -103,8 +103,8 @@
 
       <section id="notes" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">RECENT NOTES</h2>
-          <a href="#" data-todo>All →</a>
+          <h2 class="eyebrow">NOTES</h2>
+          <a href="#" data-todo>전체 보기 →</a>
         </header>
 
         <div class="list" data-render="notes"></div>
@@ -112,7 +112,7 @@
 
       <section id="reading" class="section container">
         <header class="section-header">
-          <h2 class="eyebrow">READING</h2>
+          <h2 class="eyebrow">BOOKS</h2>
         </header>
 
         <div class="list" data-render="reading"></div>
@@ -125,8 +125,50 @@
 
   <div id="site-footer"></div>
 
-  <script src="./assets/data/site-data.js"></script>
-  <script src="./assets/js/app.js"></script>
+  <script>
+    (function () {
+      var seed = Date.now();
+
+      var scripts = [
+        "./assets/data/portfolio-data.js",
+        "./assets/data/archive-data.js",
+        "./assets/data/study-data.js"
+      ];
+
+      function loadScript(index) {
+        var script;
+
+        if (index >= scripts.length) {
+          window.SITE_DATA = {
+            portfolio: Object.assign(
+              {},
+              window.PORTFOLIO_DATA || {},
+              {
+                archiveBoundary: (window.ARCHIVE_DATA || {}).boundary,
+                archive: (window.ARCHIVE_DATA || {}).archive,
+                documents: (window.ARCHIVE_DATA || {}).documents
+              }
+            ),
+            study: window.STUDY_DATA || {}
+          };
+
+          script = document.createElement("script");
+          script.src = "./assets/js/app.js?v=" + seed;
+          document.body.appendChild(script);
+          return;
+        }
+
+        script = document.createElement("script");
+        script.src = scripts[index] + "?v=" + seed;
+        script.onload = function () {
+          loadScript(index + 1);
+        };
+        document.body.appendChild(script);
+      }
+
+      loadScript(0);
+    })();
+  </script>
 
 </body>
 </html>

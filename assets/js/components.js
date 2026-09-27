@@ -26,17 +26,17 @@
   /* nav 항목을 바꾸려면 아래 배열만 수정한다. */
 
   var navPortfolio = [
-    ["Projects", "#projects"],
-    ["Archive", "#archive"],
-    ["Documents", "#documents"],
-    ["About", "#about"]
+    ["프로젝트", "#projects"],
+    ["기록", "#archive"],
+    ["문서", "#documents"],
+    ["소개", "#about"]
   ];
 
   var navStudy = [
-    ["Topics", "#topics"],
-    ["Notes", "#notes"],
-    ["Reading", "#reading"],
-    ["About", "#about"]
+    ["주제", "#topics"],
+    ["노트", "#notes"],
+    ["읽는 책", "#reading"],
+    ["소개", "#about"]
   ];
 
 
@@ -63,8 +63,8 @@
     /* 상세 페이지에는 모드 스위치를 두지 않는다. */
     var controls = onHome
       ? '<div class="mode-switch">' +
-          '<button data-mode="portfolio" aria-pressed="true">Portfolio</button>' +
-          '<button data-mode="study" aria-pressed="false">Study</button>' +
+          '<button data-mode="portfolio" aria-pressed="true">작업</button>' +
+          '<button data-mode="study" aria-pressed="false">학습</button>' +
         '</div>'
       : "";
 
@@ -79,7 +79,7 @@
 
           '<div class="header-controls">' +
             controls +
-            '<button id="theme-toggle" aria-label="다크 모드 전환">Dark</button>' +
+            '<button id="theme-toggle" aria-label="다크 모드 전환">어둡게</button>' +
           '</div>' +
 
         '</div>' +
@@ -98,7 +98,7 @@
       "서버 인프라를 직접 연결하며 검증하고 있습니다.",
     links: [
       ["GitHub", "https://github.com/JoheoungWoo"],
-      ["Email", "mailto:YOUR_EMAIL@example.com"]   /* ← 실제 주소로 교체 */
+      ["Email", "mailto:hataraci9350@daum.net"]
     ]
   };
 

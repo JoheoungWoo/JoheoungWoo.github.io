@@ -1,6 +1,6 @@
 /* ============================================================
    모드(Portfolio / Study), 테마 전환, 홈 데이터 렌더링.
-   홈 데이터는 assets/data/site-data.js 에 둔다.
+   홈 데이터는 assets/data/*-data.js 에 둔다.
 ============================================================ */
 
 (function () {
@@ -196,6 +196,22 @@
       return Promise.resolve();
     }
 
+    if (window.PORTFOLIO_DATA || window.STUDY_DATA || window.ARCHIVE_DATA) {
+      renderHome({
+        portfolio: Object.assign(
+          {},
+          window.PORTFOLIO_DATA || {},
+          {
+            archiveBoundary: (window.ARCHIVE_DATA || {}).boundary,
+            archive: (window.ARCHIVE_DATA || {}).archive,
+            documents: (window.ARCHIVE_DATA || {}).documents
+          }
+        ),
+        study: window.STUDY_DATA || {}
+      });
+      return Promise.resolve();
+    }
+
     var targets = document.querySelectorAll("[data-render]");
 
     targets.forEach(function (target) {
@@ -234,7 +250,7 @@
 
     if (themeButton) {
       themeButton.textContent =
-        theme === "dark" ? "Light" : "Dark";
+        theme === "dark" ? "밝게" : "어둡게";
     }
 
     try {
