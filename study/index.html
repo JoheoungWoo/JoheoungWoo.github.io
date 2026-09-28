@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" data-mode="study">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>학습 기록 - 조형우</title>
+
+  <meta
+    name="description"
+    content="학습 기록을 카테고리별로 모아 보는 글 목록.">
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+
+  <div id="site-header" data-home="false"></div>
+  <script src="../assets/js/components.js"></script>
+
+
+  <main class="study-blog">
+
+    <section class="hero container">
+      <p class="eyebrow">학습 기록</p>
+      <h1>학습 기록을<br>카테고리별로 모아둡니다.</h1>
+      <p class="lead">
+        공부한 내용을 블로그 글처럼 쌓아두는 공간입니다.
+        긴 원문보다 다시 찾아보기 쉬운 목차와 요약을 우선합니다.
+      </p>
+    </section>
+
+
+    <section class="section container">
+      <header class="section-header">
+        <h2 class="eyebrow">글 목록</h2>
+        <span class="post-count">8개 글</span>
+      </header>
+
+      <div class="category-filter" aria-label="카테고리 필터">
+        <button type="button" data-filter="all" aria-pressed="true">전체</button>
+        <button type="button" data-filter="Java">Java</button>
+        <button type="button" data-filter="Backend">Backend</button>
+        <button type="button" data-filter="AI">AI</button>
+        <button type="button" data-filter="Infra">Infra</button>
+        <button type="button" data-filter="CS">CS</button>
+      </div>
+
+      <div class="post-list">
+        <a class="post-item" href="./java.html" data-category="Java">
+          <span class="post-date">2026.09.28 14:30</span>
+          <span class="post-category">Java</span>
+          <h3>Java 학습 시리즈</h3>
+          <p>설치부터 JVM 구조까지 이어지는 Java 학습 목차입니다.</p>
+          <small>시리즈 · 20개 글</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="Java" data-todo>
+          <span class="post-date">2026.09.24 21:10</span>
+          <span class="post-category">Java</span>
+          <h3>JVM 구조와 GC</h3>
+          <p>힙, 스택, 클래스 로더, GC 흐름을 다시 보기 쉽게 정리합니다.</p>
+          <small>Draft</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="Java" data-todo>
+          <span class="post-date">2026.09.20 19:40</span>
+          <span class="post-category">Java</span>
+          <h3>멀티 스레드와 동기화</h3>
+          <p>스레드 생성, 공유 자원, synchronized 사용 기준을 정리합니다.</p>
+          <small>Draft</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="Java" data-todo>
+          <span class="post-date">2026.09.15 23:05</span>
+          <span class="post-category">Java</span>
+          <h3>Stream API와 Optional</h3>
+          <p>컬렉션 처리 흐름과 Optional을 써도 되는 상황을 구분합니다.</p>
+          <small>Draft</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="Backend" data-todo>
+          <span class="post-date">2026.09.11 18:20</span>
+          <span class="post-category">Backend</span>
+          <h3>API 응답 구조를 정리하는 기준</h3>
+          <p>성공, 실패, 검증 오류를 같은 형식으로 다루는 방법을 메모합니다.</p>
+          <small>Queue</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="AI" data-todo>
+          <span class="post-date">2026.09.08 22:15</span>
+          <span class="post-category">AI</span>
+          <h3>프롬프트를 테스트 케이스처럼 다루기</h3>
+          <p>출력 품질을 감으로만 보지 않기 위한 기록 방식을 정리합니다.</p>
+          <small>Queue</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="Infra" data-todo>
+          <span class="post-date">2026.09.04 20:00</span>
+          <span class="post-category">Infra</span>
+          <h3>정적 사이트 배포 체크리스트</h3>
+          <p>GitHub Pages에 올리기 전 확인할 링크, 경로, 공개 범위입니다.</p>
+          <small>Queue</small>
+        </a>
+
+        <a class="post-item" href="#" data-category="CS" data-todo>
+          <span class="post-date">2026.09.01 17:35</span>
+          <span class="post-category">CS</span>
+          <h3>해시와 Map을 같이 이해하기</h3>
+          <p>자료구조 개념을 Java 컬렉션 사용 경험과 연결해서 정리합니다.</p>
+          <small>Queue</small>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll(".category-filter button");
+      var posts = document.querySelectorAll(".post-item");
+      var count = document.querySelector(".post-count");
+
+      function applyFilter(category) {
+        var visible = 0;
+
+        posts.forEach(function (post) {
+          var show = category === "all" || post.dataset.category === category;
+          post.hidden = !show;
+
+          if (show) {
+            visible += 1;
+          }
+        });
+
+        buttons.forEach(function (button) {
+          button.setAttribute(
+            "aria-pressed",
+            button.dataset.filter === category
+          );
+        });
+
+        if (count) {
+          count.textContent = visible + "개 글";
+        }
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          applyFilter(button.dataset.filter);
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

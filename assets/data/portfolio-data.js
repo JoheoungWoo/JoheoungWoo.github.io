@@ -1,8 +1,8 @@
 window.PORTFOLIO_DATA = {
   hero: {
-    eyebrow: "WORK",
+    eyebrow: "포트폴리오",
     title: ["프로젝트를", "하나씩 정리하는", "공간입니다."],
-    lead: "작업 중인 프로젝트와 기록을 가볍게 정리합니다.",
+    lead: "진행한 프로젝트와 기록을 가볍게 정리합니다.",
     link: {
       label: "프로젝트 보기 →",
       href: "#projects"
@@ -38,6 +38,14 @@ window.PORTFOLIO_DATA = {
     }
   ],
   journey: [
+    {
+      date: "작업 활동",
+      type: "",
+      text: "최근 활동 기록입니다.",
+      href: "https://github.com/JoheoungWoo",
+      grass: "https://ghchart.rshah.org/315EF5/JoheoungWoo",
+      alt: "JoheoungWoo GitHub contribution graph"
+    },
     {
       date: "YYYY",
       type: "상태",

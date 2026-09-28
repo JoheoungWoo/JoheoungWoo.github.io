@@ -1,45 +1,59 @@
 window.STUDY_DATA = {
   hero: {
-    eyebrow: "STUDY",
-    title: ["학습 기록을", "하나씩 채우는", "공간입니다."],
-    lead: "학습 흐름과 정리한 내용을 차근차근 모아 둡니다.",
+    eyebrow: "학습",
+    title: ["학습 기록을", "블로그처럼", "쌓아둡니다."],
+    lead: "카테고리별 학습 글과 시리즈 목차를 다시 찾아보기 쉽게 모아 둡니다.",
     stats: [
       {
-        value: "0",
-        label: "노트"
+        value: "8",
+        label: "글"
       },
       {
-        value: "YYYY.MM",
+        value: "2026.09.28",
         label: "마지막 수정"
       }
     ]
   },
   topics: [
     {
-      number: "0개 노트",
-      title: "주제 제목",
-      summary: "학습 주제 설명을 여기에 작성합니다.",
-      meta: "준비 중",
-      href: "#",
-      todo: true,
-      linkLabel: "자세히 보기 →"
+      number: "20개 글",
+      title: "Java",
+      summary: "설치와 기본 문법부터 JVM 구조와 GC까지 이어지는 학습 시리즈입니다.",
+      meta: "시리즈 · 2026.09.28 14:30",
+      href: "./study/java.html",
+      linkLabel: "시리즈 보기 →"
     }
   ],
-  queue: "준비 중 · 여기에 앞으로 정리할 주제를 적습니다.",
+  queue: "",
   notes: [
     {
-      date: "YYYY.MM",
-      type: "주제",
-      text: "노트 제목",
-      level: "-",
-      href: "#",
+      date: "2026.09.28",
+      type: "Java",
+      text: "Java 학습 시리즈",
+      level: "14:30",
+      href: "./study/java.html"
+    },
+    {
+      date: "2026.09.24",
+      type: "Java",
+      text: "JVM 구조와 GC",
+      level: "21:10",
+      href: "./study/",
+      todo: true
+    },
+    {
+      date: "2026.09.20",
+      type: "Java",
+      text: "멀티 스레드와 동기화",
+      level: "19:40",
+      href: "./study/",
       todo: true
     }
   ],
   reading: [
     {
-      title: "읽는 책 제목",
-      progress: "-"
+      title: "Java, Backend, AI 운영 메모를 공개 가능한 글로 정리 중",
+      progress: "2026.09.28 14:30"
     }
   ]
 };

@@ -27,6 +27,7 @@
 
   var navPortfolio = [
     ["프로젝트", "#projects"],
+    ["이력", "#journey"],
     ["기록", "#archive"],
     ["문서", "#documents"],
     ["소개", "#about"]
@@ -34,8 +35,8 @@
 
   var navStudy = [
     ["주제", "#topics"],
-    ["노트", "#notes"],
-    ["읽는 책", "#reading"],
+    ["글", "#notes"],
+    ["TODO", "#reading"],
     ["소개", "#about"]
   ];
 
@@ -59,14 +60,18 @@
   function headerHtml(options) {
 
     var onHome = options.home === true;
+    var currentMode =
+      document.documentElement.getAttribute("data-mode") || "portfolio";
 
-    /* 상세 페이지에는 모드 스위치를 두지 않는다. */
     var controls = onHome
       ? '<div class="mode-switch">' +
-          '<button data-mode="portfolio" aria-pressed="true">작업</button>' +
+          '<button data-mode="portfolio" aria-pressed="true">포트폴리오</button>' +
           '<button data-mode="study" aria-pressed="false">학습</button>' +
         '</div>'
-      : "";
+      : '<div class="mode-switch">' +
+          '<a href="' + root + '" aria-pressed="' + (currentMode === "portfolio") + '">포트폴리오</a>' +
+          '<a href="' + root + 'study/" aria-pressed="' + (currentMode === "study") + '">학습</a>' +
+        '</div>';
 
     return '' +
       '<header class="header">' +

@@ -94,6 +94,15 @@
   }
 
   function staticRowHtml(item) {
+    if (item.grass) {
+      return '' +
+        '<a class="list-item is-block github-grass-row" href="' + attr(item.href) + '">' +
+          '<span class="col-a">' + escapeHtml(item.date) + '</span>' +
+          '<p class="col-c">' + escapeHtml(item.text) + '</p>' +
+          '<img src="' + attr(item.grass) + '" alt="' + escapeHtml(item.alt) + '">' +
+        '</a>';
+    }
+
     return '' +
       '<div class="list-item">' +
         '<span class="col-a">' + escapeHtml(item.date) + '</span>' +
@@ -174,7 +183,11 @@
     }
 
     if (slot("studyQueue")) {
-      slot("studyQueue").textContent = study.queue || "";
+      if (study.queue) {
+        slot("studyQueue").textContent = study.queue;
+      } else {
+        slot("studyQueue").hidden = true;
+      }
     }
 
     if (slot("notes")) {
