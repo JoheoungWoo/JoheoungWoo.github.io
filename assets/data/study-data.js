@@ -25,31 +25,6 @@ window.STUDY_DATA = {
     }
   ],
   queue: "",
-  notes: [
-    {
-      date: "2026.09.28",
-      type: "Java",
-      text: "Java 학습 시리즈",
-      level: "14:30",
-      href: "./study/java.html"
-    },
-    {
-      date: "2026.09.24",
-      type: "Java",
-      text: "JVM 구조와 GC",
-      level: "21:10",
-      href: "./study/",
-      todo: true
-    },
-    {
-      date: "2026.09.20",
-      type: "Java",
-      text: "멀티 스레드와 동기화",
-      level: "19:40",
-      href: "./study/",
-      todo: true
-    }
-  ],
   reading: [
     {
       title: "Java, Backend, AI 운영 메모를 공개 가능한 글로 정리 중",

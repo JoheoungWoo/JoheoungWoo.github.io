@@ -134,7 +134,8 @@
       var scripts = [
         "./assets/data/portfolio-data.js",
         "./assets/data/archive-data.js",
-        "./assets/data/study-data.js"
+        "./assets/data/study-data.js",
+        "./assets/data/study-posts-data.js"
       ];
 
       function loadScript(index) {
@@ -151,7 +152,13 @@
                 documents: (window.ARCHIVE_DATA || {}).documents
               }
             ),
-            study: window.STUDY_DATA || {}
+            study: Object.assign(
+              {},
+              window.STUDY_DATA || {},
+              {
+                posts: window.STUDY_POSTS || []
+              }
+            )
           };
 
           script = document.createElement("script");

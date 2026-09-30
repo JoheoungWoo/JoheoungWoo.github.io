@@ -63,15 +63,11 @@
     var currentMode =
       document.documentElement.getAttribute("data-mode") || "portfolio";
 
-    var controls = onHome
-      ? '<div class="mode-switch">' +
-          '<button data-mode="portfolio" aria-pressed="true">포트폴리오</button>' +
-          '<button data-mode="study" aria-pressed="false">학습</button>' +
-        '</div>'
-      : '<div class="mode-switch">' +
-          '<a href="' + root + '" aria-pressed="' + (currentMode === "portfolio") + '">포트폴리오</a>' +
-          '<a href="' + root + 'study/" aria-pressed="' + (currentMode === "study") + '">학습</a>' +
-        '</div>';
+    var controls =
+      '<div class="mode-switch">' +
+        '<a href="' + root + '" aria-pressed="' + (currentMode === "portfolio") + '">포트폴리오</a>' +
+        '<a href="' + root + 'study/" aria-pressed="' + (currentMode === "study") + '">학습</a>' +
+      '</div>';
 
     return '' +
       '<header class="header">' +

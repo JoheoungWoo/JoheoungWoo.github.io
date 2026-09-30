@@ -93,14 +93,27 @@
       '</a>';
   }
 
+  function postRowHtml(item) {
+    var parts = String(item.date || "").split(" ");
+
+    return rowHtml({
+      date: parts[0],
+      type: item.category,
+      text: item.title,
+      level: parts[1] || "",
+      href: item.href,
+      todo: item.todo
+    });
+  }
+
   function staticRowHtml(item) {
     if (item.grass) {
       return '' +
-        '<a class="list-item is-block github-grass-row" href="' + attr(item.href) + '">' +
+        '<div class="list-item is-block github-grass-row">' +
           '<span class="col-a">' + escapeHtml(item.date) + '</span>' +
           '<p class="col-c">' + escapeHtml(item.text) + '</p>' +
           '<img src="' + attr(item.grass) + '" alt="' + escapeHtml(item.alt) + '">' +
-        '</a>';
+        '</div>';
     }
 
     return '' +
@@ -191,7 +204,10 @@
     }
 
     if (slot("notes")) {
-      slot("notes").innerHTML = (study.notes || []).map(rowHtml).join("");
+      slot("notes").innerHTML =
+        (study.posts || study.notes || []).slice(0, 3).map(function (item) {
+          return item.category ? postRowHtml(item) : rowHtml(item);
+        }).join("");
     }
 
     if (slot("reading")) {
@@ -318,7 +334,11 @@
   var theme = "light";
 
   try {
-    mode = localStorage.getItem("mode") || mode;
+    if (modeButtons.length) {
+      mode = localStorage.getItem("mode") || mode;
+    } else {
+      mode = root.getAttribute("data-mode") || mode;
+    }
 
     theme =
       localStorage.getItem("theme") ||
@@ -329,7 +349,7 @@
 
   loadHomeData().then(bindTodoLinks);
 
-  if (document.querySelector(".mode-panel")) {
+  if (document.querySelector(".mode-panel") && modeButtons.length) {
     setMode(mode);
   }
 

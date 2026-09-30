@@ -629,10 +629,26 @@ button {
 
 /* 8b. 상세 페이지 -------------------------------------- */
 
+.article-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) 220px;
+  gap: 48px;
+
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 56px 32px 72px;
+}
+
 .article {
   max-width: 720px;
   margin: 0 auto;
   padding: 56px 32px 72px;
+}
+
+.article-shell .article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 .back {
@@ -743,6 +759,46 @@ button {
   line-height: 1.8;
 }
 
+.article-toc {
+  position: sticky;
+  top: 92px;
+  align-self: start;
+
+  padding: 16px;
+
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+}
+
+.article-toc p {
+  margin: 0 0 12px;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.article-toc a,
+.article-toc span {
+  display: block;
+  padding: 7px 0;
+
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.article-toc a:hover {
+  color: var(--accent);
+}
+
+.article-toc span {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--text-3);
+}
+
 
 /* 8c. Study Log ---------------------------------------- */
 
@@ -837,10 +893,31 @@ button {
   color: var(--accent);
 }
 
+@media (max-width: 1040px) {
+
+  .article-shell {
+    display: block;
+    max-width: 720px;
+  }
+
+  .article-shell .article {
+    max-width: 720px;
+  }
+
+  .article-toc {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
 
-  .article {
+  .article,
+  .article-shell {
     padding: 40px 20px 56px;
+  }
+
+  .article-shell .article {
+    max-width: none;
   }
 
   .article h1 {

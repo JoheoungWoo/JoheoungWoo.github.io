@@ -42,7 +42,6 @@ window.PORTFOLIO_DATA = {
       date: "작업 활동",
       type: "",
       text: "최근 활동 기록입니다.",
-      href: "https://github.com/JoheoungWoo",
       grass: "https://ghchart.rshah.org/315EF5/JoheoungWoo",
       alt: "JoheoungWoo GitHub contribution graph"
     },
