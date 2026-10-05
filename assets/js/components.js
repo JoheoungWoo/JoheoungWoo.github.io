@@ -18,7 +18,7 @@
      ./assets/js/components.js  → ./
      ../assets/js/components.js → ../ */
 
-  var src = document.currentScript.getAttribute("src");
+  var src = document.currentScript.getAttribute("src").split("?")[0];
   var root = src.replace(/assets\/js\/components\.js$/, "");
 
 
@@ -27,26 +27,27 @@
 
   var navPortfolio = [
     ["프로젝트", "#projects"],
-    ["이력", "#journey"],
-    ["기록", "#archive"],
-    ["문서", "#documents"],
-    ["소개", "#about"]
+    ["작업", "#journey"],
+    ["정리", "#archive"],
+    ["문서", "#documents"]
   ];
 
   var navStudy = [
     ["주제", "#topics"],
-    ["글", "#notes"],
-    ["TODO", "#reading"],
-    ["소개", "#about"]
+    ["노트", "#notes"],
+    ["읽는 책", "#reading"]
   ];
 
+  var navStudyList = [
+    ["글 목록", "#posts"]
+  ];
 
-  function navHtml(items, className, onHome) {
+  function navHtml(items, className, onHome, samePage) {
 
     var links = items.map(function (item) {
 
       /* 홈이 아니면 해시 앞에 홈 경로를 붙인다. */
-      var href = onHome ? item[1] : root + item[1];
+      var href = (onHome || samePage) ? item[1] : root + item[1];
 
       return '<a href="' + href + '">' + item[0] + '</a>';
     });
@@ -60,6 +61,7 @@
   function headerHtml(options) {
 
     var onHome = options.home === true;
+    var navType = options.nav || "";
     var currentMode =
       document.documentElement.getAttribute("data-mode") || "portfolio";
 
@@ -75,8 +77,10 @@
 
           '<a href="' + root + '" class="brand">CH</a>' +
 
-          navHtml(navPortfolio, "nav-portfolio", onHome) +
-          navHtml(navStudy, "nav-study", onHome) +
+          (navType === "study-list"
+            ? navHtml(navStudyList, "nav-custom", true, true)
+            : navHtml(navPortfolio, "nav-portfolio", onHome) +
+              navHtml(navStudy, "nav-study", onHome)) +
 
           '<div class="header-controls">' +
             controls +
@@ -137,7 +141,8 @@
 
   if (headerSlot) {
     headerSlot.outerHTML = headerHtml({
-      home: headerSlot.dataset.home === "true"
+      home: headerSlot.dataset.home === "true",
+      nav: headerSlot.dataset.nav || ""
     });
   }
 

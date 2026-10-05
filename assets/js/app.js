@@ -124,6 +124,73 @@
       '</div>';
   }
 
+  function statusClass(value) {
+    var key = {
+      "완료": "done",
+      "진행": "active",
+      "정리 중": "active",
+      "예정": "ready",
+      "다음": "ready",
+      "준비": "ready",
+      "보류": "hold"
+    };
+
+    return key[value] || "ready";
+  }
+
+  function workDashboardHtml(work) {
+    var profile = work.profile || {};
+    var stats = work.stats || [];
+    var calendar = work.calendar || [];
+    var queue = work.queue || [];
+
+    return '' +
+      '<div class="work-board">' +
+        '<div class="work-summary">' +
+          '<span class="work-label">' + escapeHtml(profile.label) + '</span>' +
+          '<h3>' + escapeHtml(profile.title) + '</h3>' +
+          '<p>' + escapeHtml(profile.summary) + '</p>' +
+          '<div class="work-status-row">' +
+            '<span class="work-status is-' + statusClass(profile.status) + '">' + escapeHtml(profile.status) + '</span>' +
+            '<span>업데이트 ' + escapeHtml(profile.updated) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="work-stats">' +
+          stats.map(function (item) {
+            return '<div>' +
+              '<span>' + escapeHtml(item.label) + '</span>' +
+              '<strong>' + escapeHtml(item.value) + '<small>' + escapeHtml(item.unit) + '</small></strong>' +
+              '<p>' + escapeHtml(item.hint) + '</p>' +
+            '</div>';
+          }).join("") +
+        '</div>' +
+        '<div class="work-calendar">' +
+          calendar.map(function (item) {
+            return '<article class="work-day">' +
+              '<span class="work-date">' + escapeHtml(item.date) + '<small>' + escapeHtml(item.day) + '</small></span>' +
+              '<div>' +
+                '<strong>' + escapeHtml(item.title) + '</strong>' +
+                '<p>' + escapeHtml(item.type) + '</p>' +
+              '</div>' +
+              '<span class="work-status is-' + statusClass(item.status) + '">' + escapeHtml(item.status) + '</span>' +
+            '</article>';
+          }).join("") +
+        '</div>' +
+        '<div class="work-queue">' +
+          '<h3>다음 작업</h3>' +
+          queue.map(function (item) {
+            return '<div class="work-queue-item">' +
+              '<div>' +
+                '<strong>' + escapeHtml(item.title) + '</strong>' +
+                '<p>' + escapeHtml(item.meta) + '</p>' +
+              '</div>' +
+              '<span class="work-status is-' + statusClass(item.status) + '">' + escapeHtml(item.status) + '</span>' +
+            '</div>';
+          }).join("") +
+        '</div>' +
+      '</div>';
+  }
+
   function documentHtml(item) {
     return '' +
       '<div class="list-item is-block">' +
@@ -145,17 +212,19 @@
   }
 
   function boundaryHtml(boundary) {
+    var items = boundary.items || [];
+
     return '' +
       '<div class="boundary">' +
         '<p>' + escapeHtml(boundary.summary) + '</p>' +
-        '<dl class="boundary-grid">' +
-          (boundary.items || []).map(function (item) {
+        (items.length ? '<dl class="boundary-grid">' +
+          items.map(function (item) {
             return '<div>' +
               '<dt>' + escapeHtml(item.label) + '</dt>' +
               '<dd>' + escapeHtml(item.text) + '</dd>' +
             '</div>';
           }).join("") +
-        '</dl>' +
+        '</dl>' : '') +
       '</div>';
   }
 
@@ -172,7 +241,11 @@
     }
 
     if (slot("journey")) {
-      slot("journey").innerHTML = (portfolio.journey || []).map(staticRowHtml).join("");
+      if (portfolio.work) {
+        slot("journey").innerHTML = workDashboardHtml(portfolio.work);
+      } else {
+        slot("journey").innerHTML = (portfolio.journey || []).map(staticRowHtml).join("");
+      }
     }
 
     if (slot("archiveBoundary")) {

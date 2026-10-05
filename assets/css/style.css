@@ -233,6 +233,10 @@ button {
   display: flex;
 }
 
+.nav-custom {
+  display: flex;
+}
+
 
 /* 4. 헤더 ---------------------------------------------- */
 
@@ -558,6 +562,212 @@ button {
   font-weight: 400;
   letter-spacing: 0.1em;
   color: var(--accent);
+}
+
+
+/* 작업 보드 -------------------------------------------- */
+
+.work-board {
+  display: grid;
+  grid-template-columns: 1.08fr 1fr;
+  gap: 12px;
+}
+
+.work-summary,
+.work-stats,
+.work-calendar,
+.work-queue {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.work-summary {
+  min-height: 186px;
+  padding: 22px;
+}
+
+.work-label {
+  display: block;
+  margin-bottom: 22px;
+
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+}
+
+.work-summary h3,
+.work-queue h3 {
+  margin: 0;
+
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.work-summary p {
+  max-width: 44ch;
+  margin: 12px 0 22px;
+
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+.work-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.work-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 24px;
+  padding: 0 8px;
+
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.work-status.is-done {
+  color: #166534;
+  background: rgba(34, 197, 94, 0.10);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.work-status.is-active {
+  color: var(--accent);
+  background: rgba(49, 94, 245, 0.09);
+  border-color: var(--accent-line);
+}
+
+.work-status.is-ready {
+  color: var(--text-2);
+  background: rgba(138, 143, 154, 0.10);
+}
+
+.work-status.is-hold {
+  color: #9A3412;
+  background: rgba(249, 115, 22, 0.10);
+  border-color: rgba(249, 115, 22, 0.26);
+}
+
+.work-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.work-stats div {
+  min-height: 62px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.work-stats div:first-child {
+  border-top: 0;
+}
+
+.work-stats span,
+.work-stats p,
+.work-day p,
+.work-queue-item p {
+  margin: 0;
+
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.work-stats strong {
+  display: block;
+  margin: 8px 0 4px;
+
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.work-stats small {
+  margin-left: 3px;
+
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.work-calendar,
+.work-queue {
+  overflow: hidden;
+}
+
+.work-day,
+.work-queue-item {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 66px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--line);
+}
+
+.work-day:first-child,
+.work-queue-item:first-of-type {
+  border-top: 0;
+}
+
+.work-date {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+}
+
+.work-date small {
+  display: block;
+  margin-top: 2px;
+
+  font-family: var(--sans);
+  color: var(--text-3);
+}
+
+.work-day strong,
+.work-queue-item strong {
+  display: block;
+  overflow: hidden;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.work-queue {
+  padding-top: 16px;
+}
+
+.work-queue h3 {
+  padding: 0 16px 14px;
+  font-size: 14px;
+}
+
+.work-queue-item {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 

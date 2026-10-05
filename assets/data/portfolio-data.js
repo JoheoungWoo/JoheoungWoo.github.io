@@ -64,33 +64,81 @@ window.PORTFOLIO_DATA = {
       linkLabel: "자세히 보기 →"
     }
   ],
-  journey: [
-    {
-      date: "작업 활동",
-      type: "",
-      text: "최근 활동 기록입니다.",
-      grass: "https://ghchart.rshah.org/315EF5/JoheoungWoo",
-      alt: "JoheoungWoo GitHub contribution graph"
+  work: {
+    profile: {
+      label: "WORK BOARD",
+      title: "10월 작업 현황",
+      summary: "사이트 구조를 정리하고, 실제 데이터 연결 전까지 화면과 문서 기준을 맞추는 중입니다.",
+      status: "정리 중",
+      updated: "2026.10.06"
     },
-    {
-      date: "2024",
-      type: "시작",
-      text: "작은 기능을 직접 만들며 웹과 서버의 기본 흐름을 익히는 단계"
-    },
-    {
-      date: "2025",
-      type: "정리",
-      text: "작업 과정과 배운 내용을 문서로 남기는 습관을 만드는 단계"
-    },
-    {
-      date: "2026",
-      type: "연결",
-      text: "Notion 원문과 정적 사이트 요약을 연결하는 구조를 실험하는 단계"
-    },
-    {
-      date: "다음",
-      type: "확장",
-      text: "프로젝트와 학습 기록을 실제 데이터로 하나씩 채워 넣는 단계"
-    }
-  ]
+    stats: [
+      {
+        label: "이번 주",
+        value: "4",
+        unit: "건",
+        hint: "완료 또는 진행 중"
+      },
+      {
+        label: "진행",
+        value: "2",
+        unit: "건",
+        hint: "사이트, Notion"
+      },
+      {
+        label: "대기",
+        value: "3",
+        unit: "건",
+        hint: "문서 채우기"
+      }
+    ],
+    calendar: [
+      {
+        date: "10.05",
+        day: "월",
+        title: "홈 데이터 분리",
+        type: "사이트",
+        status: "완료"
+      },
+      {
+        date: "10.06",
+        day: "화",
+        title: "작업 보드 형태 정리",
+        type: "화면",
+        status: "진행"
+      },
+      {
+        date: "10.07",
+        day: "수",
+        title: "Notion 데이터 항목 맞추기",
+        type: "연동",
+        status: "예정"
+      },
+      {
+        date: "10.08",
+        day: "목",
+        title: "문서 카드 실제 내용 입력",
+        type: "문서",
+        status: "예정"
+      }
+    ],
+    queue: [
+      {
+        title: "포트폴리오 프로젝트 실제 사례 채우기",
+        meta: "우선순위 높음",
+        status: "다음"
+      },
+      {
+        title: "학습 글 목록을 Notion DB 기준으로 맞추기",
+        meta: "데이터 구조 확인",
+        status: "준비"
+      },
+      {
+        title: "비공개 자료와 공개 요약의 경계 정리",
+        meta: "공개 범위 검토",
+        status: "보류"
+      }
+    ]
+  },
+  journey: []
 };
