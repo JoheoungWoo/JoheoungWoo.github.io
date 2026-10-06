@@ -14,6 +14,13 @@ window.PORTFOLIO_DATA = {
       title: "학습 기록 정리 도구",
       summary: "흩어진 공부 메모를 주제별로 모아 보고, 필요한 내용만 사이트에 보여주는 구조입니다.",
       meta: "학습 · 기록 · 정적 사이트",
+      category: "Web Service",
+      status: "진행중",
+      stack: ["HTML", "CSS", "JavaScript"],
+      thumbnail: {
+        label: "Study Board",
+        tone: "blue"
+      },
       href: "#",
       todo: true,
       linkLabel: "자세히 보기 →"
@@ -23,6 +30,13 @@ window.PORTFOLIO_DATA = {
       title: "개인 문서 허브",
       summary: "Notion에 둔 원문과 사이트에 보여줄 요약을 자연스럽게 연결하는 문서 인덱스입니다.",
       meta: "Notion · 문서 · 인덱스",
+      category: "Document",
+      status: "설계중",
+      stack: ["Notion", "Index", "Data"],
+      thumbnail: {
+        label: "Docs Hub",
+        tone: "dark"
+      },
       href: "#",
       todo: true,
       linkLabel: "자세히 보기 →"
@@ -32,6 +46,13 @@ window.PORTFOLIO_DATA = {
       title: "정적 포트폴리오 실험",
       summary: "빌드 도구 없이 HTML, CSS, JavaScript만으로 관리 가능한 개인 사이트 구조를 실험합니다.",
       meta: "HTML · CSS · JavaScript",
+      category: "Portfolio",
+      status: "진행중",
+      stack: ["HTML", "CSS", "JavaScript"],
+      thumbnail: {
+        label: "Static Site",
+        tone: "green"
+      },
       href: "#",
       todo: true,
       linkLabel: "자세히 보기 →"
@@ -41,6 +62,13 @@ window.PORTFOLIO_DATA = {
       title: "노트 자동 분류 흐름",
       summary: "작성한 노트를 태그, 주제, 상태별로 나눠 다음에 이어 보기 쉽게 만드는 흐름입니다.",
       meta: "분류 · 태그 · Notion",
+      category: "Workflow",
+      status: "예정",
+      stack: ["Tags", "Notion", "Archive"],
+      thumbnail: {
+        label: "Note Flow",
+        tone: "orange"
+      },
       href: "#",
       todo: true,
       linkLabel: "자세히 보기 →"
@@ -50,6 +78,13 @@ window.PORTFOLIO_DATA = {
       title: "작업 회고 템플릿",
       summary: "프로젝트가 끝난 뒤 남길 질문과 답변 틀을 정리해 반복해서 쓰는 템플릿입니다.",
       meta: "회고 · 템플릿 · 문서화",
+      category: "Template",
+      status: "예정",
+      stack: ["Review", "Docs", "Question"],
+      thumbnail: {
+        label: "Review Kit",
+        tone: "gray"
+      },
       href: "#",
       todo: true,
       linkLabel: "자세히 보기 →"
@@ -59,6 +94,13 @@ window.PORTFOLIO_DATA = {
       title: "사이트 데이터 분리",
       summary: "화면 구조와 내용을 분리해 데이터 파일만 고쳐도 홈 화면이 바뀌도록 정리했습니다.",
       meta: "데이터 · 구조 · 유지보수",
+      category: "Structure",
+      status: "완료",
+      stack: ["Data", "Render", "Static"],
+      thumbnail: {
+        label: "Data Layer",
+        tone: "violet"
+      },
       href: "#",
       todo: true,
       linkLabel: "자세히 보기 →"

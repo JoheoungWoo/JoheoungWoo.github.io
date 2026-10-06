@@ -73,12 +73,42 @@
   }
 
   function cardHtml(item) {
+    var stack = item.stack || [];
+    var thumb = item.thumbnail || {};
+    var hasProjectMeta = item.category || item.status || stack.length || item.thumbnail;
+    var thumbHtml = "";
+    var metaHtml = "";
+
+    if (hasProjectMeta) {
+      thumbHtml = item.image
+        ? '<div class="project-thumb">' +
+            '<img src="' + attr(item.image) + '" alt="' + escapeHtml(item.title) + ' 화면">' +
+          '</div>'
+        : '<div class="project-thumb is-' + escapeHtml(thumb.tone || "default") + '">' +
+            '<span>' + escapeHtml(thumb.label || item.category || item.number) + '</span>' +
+          '</div>';
+
+      metaHtml =
+        '<div class="project-meta">' +
+          (item.category ? '<span>' + escapeHtml(item.category) + '</span>' : '') +
+          (item.status ? '<span class="is-status">' + escapeHtml(item.status) + '</span>' : '') +
+        '</div>';
+    }
+
     return '' +
-      '<a class="card" href="' + attr(item.href) + '"' + todoAttr(item) + '>' +
+      '<a class="card' + (hasProjectMeta ? ' project-card' : '') + '" href="' + attr(item.href) + '"' + todoAttr(item) + '>' +
+        thumbHtml +
         '<span class="card-number">' + escapeHtml(item.number) + '</span>' +
+        metaHtml +
         '<h3>' + escapeHtml(item.title) + '</h3>' +
         '<p>' + escapeHtml(item.summary) + '</p>' +
-        '<small>' + escapeHtml(item.meta) + '</small>' +
+        (stack.length
+          ? '<div class="project-stack">' +
+              stack.map(function (name) {
+                return '<span>' + escapeHtml(name) + '</span>';
+              }).join("") +
+            '</div>'
+          : '<small>' + escapeHtml(item.meta) + '</small>') +
         '<span class="card-link">' + escapeHtml(item.linkLabel) + '</span>' +
       '</a>';
   }
