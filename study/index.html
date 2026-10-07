@@ -41,7 +41,7 @@
     <section id="posts" class="section container">
       <header class="section-header">
         <h2 class="eyebrow">글 목록</h2>
-        <span class="post-count">8개 글</span>
+        <span class="post-count">0개 글</span>
       </header>
 
       <div class="category-filter" aria-label="카테고리 필터">
@@ -61,10 +61,8 @@
 
   <div id="site-footer"></div>
 
-  <script src="../assets/data/study-posts-data.js"></script>
-  <script src="../assets/js/app.js"></script>
   <script>
-    (function () {
+    function renderStudyPosts() {
       var buttons = document.querySelectorAll(".category-filter button");
       var postList = document.querySelector('[data-render="studyPosts"]');
       var count = document.querySelector(".post-count");
@@ -140,6 +138,32 @@
         });
 
       applyFilter("all");
+    }
+
+    (function () {
+      var seed = Date.now();
+      var scripts = [
+        "../assets/data/study-posts-data.js?v=" + seed,
+        "../assets/js/app.js?v=" + seed
+      ];
+
+      function loadScript(index) {
+        var script;
+
+        if (index >= scripts.length) {
+          renderStudyPosts();
+          return;
+        }
+
+        script = document.createElement("script");
+        script.src = scripts[index];
+        script.onload = function () {
+          loadScript(index + 1);
+        };
+        document.body.appendChild(script);
+      }
+
+      loadScript(0);
     })();
   </script>
 

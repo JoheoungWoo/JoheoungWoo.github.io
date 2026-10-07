@@ -50,6 +50,36 @@
 - private_pdf_urls
 - customer_or_user_data
 
+현재 저장소에는 먼저 학습 글 목록을 확인하기 위한 최소 동기화 스크립트를 둡니다.
+
+```bash
+node scripts/notion-sync.mjs
+```
+
+`.env.local` 에 아래 값을 넣으면 Notion 데이터베이스를 읽어서 `assets/data/study-posts-data.js` 를 다시 생성합니다.
+
+```env
+NOTION_TOKEN=secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NOTION_DATA_SOURCE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+예전 Notion API 형태를 쓰는 경우에는 `NOTION_DATABASE_ID` 도 fallback 으로 지원합니다.
+API 버전 헤더를 바꿔야 하면 `NOTION_VERSION=2026-03-11` 처럼 지정할 수 있습니다.
+
+권장 컬럼은 아래 정도면 충분합니다. 템플릿은 나중에 바꿔도 됩니다.
+
+| Property | Type | Site field |
+|---|---|---|
+| `Title` | Title | 글 제목 |
+| `Category` | Select | Java, Backend, AI 등 |
+| `Summary` | Text | 공개 요약 |
+| `PublishedAt` | Date | 표시 날짜 |
+| `Slug` | Text | `study/{slug}.html` 연결 |
+| `PublicUrl` | URL | Notion 공개 링크 또는 외부 링크 |
+| `Visibility` | Select | `Public` 만 사이트에 반영 |
+
+`Visibility` 값이 비어 있으면 일단 가져오고, 값이 있으면 기본적으로 `Public` 만 가져옵니다. 다른 값을 쓰려면 `.env.local` 에 `NOTION_VISIBILITY_VALUE=공개` 처럼 바꿉니다.
+
 ### 3. 브라우저 직접 호출 금지
 
 GitHub Pages 의 `assets/js/app.js` 에서 Notion API 를 직접 호출하지 않습니다. 토큰이 노출되기 때문입니다.
