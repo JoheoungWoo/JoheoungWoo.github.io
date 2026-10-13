@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" data-mode="study">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>학습 글 - 조형우</title>
+
+  <meta
+    name="description"
+    content="학습 글 본문.">
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261006-5">
+</head>
+
+<body>
+
+  <div id="site-header" data-home="false"></div>
+  <script src="../assets/js/components.js?v=20261006-3"></script>
+
+
+  <main class="article-shell">
+
+    <article class="article" data-render="lessonArticle">
+      <a class="back" href="./java.html">← Java 학습 시리즈</a>
+      <p class="eyebrow loading-context" data-render="loadingEyebrow"></p>
+      <h1 data-render="loadingTitle">선택한 글</h1>
+      <div class="loading-panel" role="status" aria-live="polite">
+        <span class="loading-bar"></span>
+      </div>
+    </article>
+
+    <aside class="article-toc" aria-label="글 목차" data-render="lessonToc">
+      <p>목차</p>
+      <span>불러오는 중</span>
+    </aside>
+
+  </main>
+
+
+  <div id="site-footer"></div>
+
+  <script>
+    function renderLessonView() {
+      var article = document.querySelector('[data-render="lessonArticle"]');
+      var toc = document.querySelector('[data-render="lessonToc"]');
+      var params = new URLSearchParams(window.location.search);
+      var lessonId = params.get("lesson") || "";
+      var series = params.get("series") || "java";
+      var requestedTitle = params.get("title") || "";
+      var requestedPath = params.get("path") || "";
+      var posts = window.STUDY_POSTS || [];
+      var post = posts.find(function (item) {
+        return item.slug === series || item.category.toLowerCase() === series;
+      });
+      var lesson = post && findLesson(post.children, "notion", lessonId, []);
+      var tocItems = [];
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function attr(value) {
+        return escapeHtml(value || "#");
+      }
+
+      function setInitialLoadingText() {
+        var loadingTitle = document.querySelector('[data-render="loadingTitle"]');
+        var loadingEyebrow = document.querySelector('[data-render="loadingEyebrow"]');
+
+        if (loadingTitle && requestedTitle) {
+          loadingTitle.textContent = requestedTitle;
+        }
+
+        if (loadingEyebrow) {
+          loadingEyebrow.textContent = requestedPath;
+        }
+      }
+
+      function nodeId(prefix, index) {
+        return prefix + "-" + index;
+      }
+
+      function findLesson(nodes, prefix, targetId, parents) {
+        var index;
+        var node;
+        var id;
+        var found;
+
+        for (index = 0; index < (nodes || []).length; index += 1) {
+          node = nodes[index];
+          id = nodeId(prefix, index);
+
+          if (id === targetId && node.type === "page") {
+            return {
+              id: id,
+              node: node,
+              parents: parents
+            };
+          }
+
+          if (node.type === "page") {
+            found = findLesson(node.children, id, targetId, parents.concat(node.title));
+
+            if (found) {
+              return found;
+            }
+          }
+        }
+
+        return null;
+      }
+
+      function renderContent(nodes, depth, prefix) {
+        return (nodes || []).map(function (node, index) {
+          var id = nodeId(prefix, index);
+
+          if (node.type === "page") {
+            tocItems.push({
+              id: id,
+              title: node.title
+            });
+
+            return '' +
+              '<section class="article-section">' +
+                '<h2 class="notion-heading notion-heading-1" id="' + id + '">' + escapeHtml(node.title) + '</h2>' +
+                renderContent(node.children, depth + 1, id) +
+              '</section>';
+          }
+
+          if (node.type === "image") {
+            return '' +
+              '<figure class="notion-image">' +
+                '<img src="' + attr(node.url) + '" alt="' + escapeHtml(node.caption || "학습 이미지") + '">' +
+                (node.caption ? '<figcaption>' + escapeHtml(node.caption) + '</figcaption>' : '') +
+              '</figure>';
+          }
+
+          if (node.type === "heading_1" || node.type === "heading_2" || node.type === "heading_3") {
+            var headingMap = {
+              heading_1: {
+                tag: "h2",
+                className: "notion-heading-1"
+              },
+              heading_2: {
+                tag: "h3",
+                className: "notion-heading-2"
+              },
+              heading_3: {
+                tag: "h4",
+                className: "notion-heading-3"
+              }
+            };
+            var heading = headingMap[node.type];
+
+            tocItems.push({
+              id: id,
+              title: node.text
+            });
+
+            return '<' + heading.tag + ' class="notion-heading ' + heading.className + '" id="' + id + '">' +
+              escapeHtml(node.text) +
+            '</' + heading.tag + '>';
+          }
+
+          if (node.type === "quote") {
+            return '<blockquote class="notion-quote">' + escapeHtml(node.text) + '</blockquote>';
+          }
+
+          if (node.type === "code") {
+            return '<pre class="notion-code"><code>' + escapeHtml(node.text) + '</code></pre>';
+          }
+
+          if (node.type === "bulleted_list_item") {
+            return '<ul class="notion-list"><li>' + escapeHtml(node.text) + '</li></ul>';
+          }
+
+          if (node.type === "numbered_list_item") {
+            return '<ol class="notion-list"><li>' + escapeHtml(node.text) + '</li></ol>';
+          }
+
+          return '<p class="notion-paragraph">' + escapeHtml(node.text) + '</p>';
+        }).join("");
+      }
+
+      if (!post || !lesson) {
+        renderHeaderSyncedAt();
+
+        article.innerHTML = '' +
+          '<a class="back" href="./java.html">← Java 학습 시리즈</a>' +
+          '<p class="eyebrow">찾을 수 없음</p>' +
+          '<h1>' + escapeHtml(requestedTitle || "글을 찾을 수 없습니다.") + '</h1>' +
+          '<p class="summary">목록에서 다시 선택해 주세요.</p>';
+        toc.innerHTML = '<p>목차</p><span>Java · 학습</span>';
+        return;
+      }
+
+      var body = renderContent(lesson.node.children, 1, lesson.id);
+      var parentPath = (lesson.parents || []).join(" › ");
+      renderHeaderSyncedAt();
+
+      function renderHeaderSyncedAt() {
+        var syncedAt = document.querySelector('[data-render="headerSyncedAt"]');
+
+        if (syncedAt) {
+          syncedAt.textContent = "데이터 기준 " + (window.STUDY_POSTS_SYNCED_AT || "확인 불가");
+          syncedAt.hidden = false;
+        }
+      }
+
+      article.innerHTML = '' +
+        '<a class="back" href="./java.html">← Java 학습 시리즈</a>' +
+        '<p class="eyebrow">' + escapeHtml(parentPath || post.title) + '</p>' +
+        '<h1>' + escapeHtml(lesson.node.title) + '</h1>' +
+        (parentPath ? '<p class="summary">' + escapeHtml(parentPath) + '</p>' : '') +
+        '<dl class="meta-table">' +
+          '<dt>날짜</dt>' +
+          '<dd>' + escapeHtml(String(post.meta || post.date || "").split(" ")[0]) + '</dd>' +
+        '</dl>' +
+        (body || '<p class="learned">아직 본문이 없습니다. Notion 페이지에 내용을 추가하면 표시됩니다.</p>');
+
+      toc.innerHTML = '' +
+        '<p>목차</p>' +
+        (tocItems.length
+          ? tocItems.map(function (item) {
+              return '<a href="#' + escapeHtml(item.id) + '">' + escapeHtml(item.title) + '</a>';
+            }).join("")
+          : '<span>본문</span>') +
+        '<span>' + escapeHtml(post.category) + ' · 학습</span>';
+    }
+
+    (function () {
+      var seed = Date.now();
+      var scripts = [
+        "../assets/data/study-posts-data.js?v=" + seed,
+        "../assets/js/app.js?v=" + seed
+      ];
+
+      var params = new URLSearchParams(window.location.search);
+      var title = params.get("title");
+      var loadingTitle = document.querySelector('[data-render="loadingTitle"]');
+      var loadingEyebrow = document.querySelector('[data-render="loadingEyebrow"]');
+
+      if (loadingTitle && title) {
+        loadingTitle.textContent = title;
+      }
+
+      if (loadingEyebrow) {
+        loadingEyebrow.textContent = params.get("path") || "";
+      }
+
+      function loadScript(index) {
+        var script;
+
+        if (index >= scripts.length) {
+          renderLessonView();
+          return;
+        }
+
+        script = document.createElement("script");
+        script.src = scripts[index];
+        script.onload = function () {
+          loadScript(index + 1);
+        };
+        document.body.appendChild(script);
+      }
+
+      loadScript(0);
+    })();
+  </script>
+
+</body>
+</html>

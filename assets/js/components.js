@@ -83,6 +83,7 @@
               navHtml(navStudy, "nav-study", onHome)) +
 
           '<div class="header-controls">' +
+            '<span class="header-data-time" data-render="headerSyncedAt" hidden></span>' +
             controls +
             '<button id="theme-toggle" aria-label="다크 모드 전환">어둡게</button>' +
           '</div>' +

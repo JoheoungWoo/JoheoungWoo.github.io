@@ -18,8 +18,8 @@ GitHub Pages 정적 사이트이며 빌드 도구를 쓰지 않습니다. 파일
 │  ├─ css/style.css              디자인 전부
 │  ├─ js/components.js           공통 헤더 · 푸터
 │  ├─ js/app.js                  모드 · 테마 전환
-│  ├─ data/portfolio-data.js     프로젝트와 저니 데이터
-│  ├─ data/archive-data.js       아카이브와 문서 허브 데이터
+│  ├─ data/portfolio-data.js     프로젝트 데이터
+│  ├─ data/archive-data.js       정리와 문서 데이터
 │  ├─ data/study-data.js         학습 데이터
 │  └─ favicon.svg
 │
@@ -53,8 +53,8 @@ Notion API 토큰은 정적 사이트 JavaScript 에 넣지 않습니다. 자동
 | 색상, 폰트, 여백 | `assets/css/style.css` | `:root` 블록 |
 | 헤더 nav 항목 | `assets/js/components.js` | `navPortfolio` / `navStudy` 배열 |
 | 푸터 소개, 링크 | `assets/js/components.js` | `profile` 객체 |
-| 프로젝트, 저니 | `assets/data/portfolio-data.js` | `hero` / `projects` / `journey` |
-| 아카이브, 문서 허브 | `assets/data/archive-data.js` | `boundary` / `archive` / `documents` |
+| 프로젝트 | `assets/data/portfolio-data.js` | `hero` / `projects` / `journey` |
+| 정리, 문서 | `assets/data/archive-data.js` | `boundary` / `archive` / `documents` |
 | 학습 영역 | `assets/data/study-data.js` | `hero` / `topics` / `notes` / `reading` |
 
 헤더와 푸터는 모든 페이지가 `components.js` 하나를 공유합니다. 한 곳만 고치면 전체에 반영됩니다.
@@ -64,12 +64,7 @@ HOME 은 `index.html` 에 구조만 두고 `assets/data/*-data.js` 파일들을 
 
 ## 페이지 추가하기
 
-기존 상세 페이지를 복사해 쓰는 것이 가장 빠릅니다.
-
-```
-projects/electrician.html   프로젝트 상세 템플릿
-study/java.html             학습 시리즈 템플릿
-```
+상세 페이지가 필요해지면 `projects/` 또는 `study/` 아래에 새 HTML 파일을 추가합니다.
 
 새 페이지에는 이 두 줄이 필요합니다. 하위 폴더면 `../`를 씁니다.
 
@@ -118,11 +113,11 @@ study/java.html             학습 시리즈 템플릿
 
 ## 규칙
 
-- 아직 링크가 없는 곳에는 `href="#" data-todo` 를 씁니다. 실제 주소를 넣을 때 `data-todo` 도 함께 지웁니다.
+- 아직 공개할 수 없는 항목은 공개 데이터 배열에 넣지 않습니다.
 - Notion 링크는 공개 권한을 확인한 뒤 연결합니다. 비공개 Notion URL 은 권한 없는 사용자에게 로그인 또는 접근 거부 화면이 보일 수 있습니다.
 - 내부 원문, API 키, 서버 주소, 운영 절차, 비공개 PDF 는 public GitHub 에 올리지 않습니다.
 - 진행 막대는 실제 진행률이나 의미 있는 구성비가 있을 때만 씁니다. 분모를 임의로 만들지 않고, 아래 텍스트로 의미를 함께 적습니다.
-- 카드는 최대 6개. 준비 중인 항목은 빈 카드 대신 하단 텍스트 목록으로 둡니다.
+- 카드는 최대 6개. 실제 공개할 내용이 생겼을 때만 추가합니다.
 - 이미지나 파일이 필요해질 때만 `assets/images/`, `assets/files/` 같은 폴더를 새로 만듭니다.
 - 이미지에는 `alt` 를 붙이고, 원본 대신 웹용 크기로 올립니다.
 
@@ -133,7 +128,7 @@ study/java.html             학습 시리즈 템플릿
 - [ ] `assets/js/components.js` 의 이메일 주소 교체
 - [ ] 상세 페이지 수치와 기간이 사실과 맞는지 확인
 - [ ] 공유 이미지가 필요해지면 `assets/images/og.png` 추가 후 `og:image` 연결 (1200×630)
-- [ ] 남아 있는 `data-todo` 링크 정리
+- [ ] 공개 데이터에 임시 항목이 없는지 확인
 - [ ] Notion 링크 권한 확인
 - [ ] public 저장소에 내부 자료가 포함되지 않았는지 확인
 
@@ -141,8 +136,16 @@ study/java.html             학습 시리즈 템플릿
 
 ## 로컬 확인
 
-파일을 더블클릭해도 동작합니다. 서버로 보려면
+Notion 내용을 먼저 정적 데이터로 동기화합니다.
 
 ```bash
-python3 -m http.server 8000
+node scripts/notion-sync.mjs
 ```
+
+서버로 보려면
+
+```bash
+node scripts/local-server.mjs
+```
+
+GitHub Pages 배포도 같은 방식입니다. GitHub Actions 가 `scripts/notion-sync.mjs` 를 실행한 뒤, 생성된 정적 파일을 Pages artifact 로 배포합니다.

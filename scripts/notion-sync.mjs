@@ -26,12 +26,15 @@ const endpoint = dataSourceId
 const notionVersion = process.env.NOTION_VERSION || (dataSourceId ? "2026-03-11" : "2022-06-28");
 
 const pages = await queryAllPages(endpoint, notionVersion);
-const posts = pages
-  .map(pageToStudyPost)
+const posts = (await Promise.all(pages.map(pageToStudyPost)))
   .filter(Boolean)
   .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+const syncedAt = formatDateTime(new Date());
 
 const out = [
+  "window.STUDY_POSTS_SYNCED_AT = ",
+  JSON.stringify(syncedAt),
+  ";\n",
   "window.STUDY_POSTS = ",
   JSON.stringify(posts, null, 2),
   ";\n"
@@ -61,22 +64,11 @@ async function queryAllPages(url, version) {
       body.start_cursor = startCursor;
     }
 
-    const response = await fetch(url, {
+    const data = await notionFetch(url, {
       method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Notion-Version": version
-      },
       body: JSON.stringify(body)
     });
 
-    if (!response.ok) {
-      const message = await response.text();
-      fail(`Notion API 요청 실패 (${response.status})\n${message}`);
-    }
-
-    const data = await response.json();
     results.push(...(data.results || []));
     startCursor = data.has_more ? data.next_cursor : undefined;
   } while (startCursor);
@@ -84,7 +76,7 @@ async function queryAllPages(url, version) {
   return results;
 }
 
-function pageToStudyPost(page) {
+async function pageToStudyPost(page) {
   const props = page.properties || {};
   const visibility = readPlain(props.Visibility);
 
@@ -102,11 +94,14 @@ function pageToStudyPost(page) {
   const category = readPlain(props.Category) || "Study";
   const summary = readPlain(props.Summary || props.PublicSummary);
   const publicUrl = readPlain(props.PublicUrl || props.URL);
-  const slug = readPlain(props.Slug);
+  const slug = normalizeSlug(readPlain(props.Slug));
   const href = publicUrl || (slug ? `./study/${slug}.html` : "./study/");
   const isReady = Boolean(publicUrl || slug);
+  const children = await blockChildrenToTree(page.id);
 
   return {
+    id: page.id,
+    slug,
     date: formatDateTime(published),
     category,
     title,
@@ -116,8 +111,105 @@ function pageToStudyPost(page) {
     studyHref: publicUrl || (slug ? `./${slug}.html` : "#"),
     todo: !isReady,
     notionUrl: publicUrl || "",
-    notionLabel: isReady ? "원문 보기 →" : "원문 준비 중"
+    notionLabel: isReady ? "원문 보기 →" : "원문 없음",
+    children
   };
+}
+
+async function blockChildrenToTree(blockId) {
+  const blocks = await listBlockChildren(blockId);
+  const tree = [];
+
+  for (const block of blocks) {
+    const item = await blockToNode(block);
+
+    if (item) {
+      tree.push(item);
+    }
+  }
+
+  return tree;
+}
+
+async function blockToNode(block) {
+  if (block.type === "child_page") {
+    return {
+      type: "page",
+      title: block.child_page?.title || "제목 없음",
+      children: await blockChildrenToTree(block.id)
+    };
+  }
+
+  if (block.type === "image") {
+    const image = block.image || {};
+    const url = image.type === "external"
+      ? image.external?.url
+      : image.file?.url;
+
+    if (!url) {
+      return null;
+    }
+
+    return {
+      type: "image",
+      url,
+      caption: richText(image.caption || [])
+    };
+  }
+
+  const value = block[block.type] || {};
+  const text = richText(value.rich_text || []);
+
+  if (!text) {
+    return null;
+  }
+
+  return {
+    type: block.type,
+    text
+  };
+}
+
+async function listBlockChildren(blockId) {
+  const results = [];
+  let startCursor;
+
+  do {
+    const url = new URL(`https://api.notion.com/v1/blocks/${blockId}/children`);
+    url.searchParams.set("page_size", "100");
+
+    if (startCursor) {
+      url.searchParams.set("start_cursor", startCursor);
+    }
+
+    const data = await notionFetch(url, {
+      method: "GET"
+    });
+
+    results.push(...(data.results || []));
+    startCursor = data.has_more ? data.next_cursor : undefined;
+  } while (startCursor);
+
+  return results;
+}
+
+async function notionFetch(url, options) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Notion-Version": notionVersion,
+      ...(options.headers || {})
+    }
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    fail(`Notion API 요청 실패 (${response.status})\n${message}`);
+  }
+
+  return response.json();
 }
 
 function readPlain(prop) {
@@ -160,6 +252,16 @@ function readDate(prop) {
 
 function richText(items) {
   return (items || []).map(item => item.plain_text || "").join("").trim();
+}
+
+function normalizeSlug(value) {
+  return String(value || "")
+    .trim()
+    .replace(/\\/g, "/")
+    .split("/")
+    .filter(Boolean)
+    .join("-")
+    .toLowerCase();
 }
 
 function formatDateTime(date) {

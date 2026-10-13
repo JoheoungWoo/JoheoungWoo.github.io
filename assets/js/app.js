@@ -35,6 +35,15 @@
     return document.querySelector('[data-render="' + name + '"]');
   }
 
+  function setSectionVisible(name, visible) {
+    var target = slot(name);
+    var section = target && target.closest(".section");
+
+    if (section) {
+      section.hidden = !visible;
+    }
+  }
+
 
   /* 데이터 렌더링 -------------------------------------- */
 
@@ -45,7 +54,7 @@
 
     var stats = "";
 
-    if (withStats && hero.stats) {
+    if (withStats && hero.stats && hero.stats.length) {
       stats = '<div class="stats">' +
         hero.stats.map(function (item) {
           return '<div>' +
@@ -133,6 +142,18 @@
       level: parts[1] || "",
       href: item.href,
       todo: item.todo
+    });
+  }
+
+  function postTopicHtml(item) {
+    return cardHtml({
+      number: item.category || "학습",
+      title: item.title,
+      summary: item.summary,
+      meta: item.meta || item.date,
+      href: item.href || item.studyHref,
+      todo: item.todo,
+      linkLabel: "글 보기 →"
     });
   }
 
@@ -244,6 +265,10 @@
   function boundaryHtml(boundary) {
     var items = boundary.items || [];
 
+    if (!boundary.summary && !items.length) {
+      return "";
+    }
+
     return '' +
       '<div class="boundary">' +
         '<p>' + escapeHtml(boundary.summary) + '</p>' +
@@ -261,33 +286,53 @@
   function renderHome(data) {
     var portfolio = data.portfolio || {};
     var study = data.study || {};
+    var projects = portfolio.projects || [];
+    var journey = portfolio.journey || [];
+    var archiveBoundary = portfolio.archiveBoundary || {};
+    var archive = portfolio.archive || [];
+    var documents = portfolio.documents || [];
+    var studyTopics = (study.topics || []).length
+      ? study.topics
+      : (study.posts || []);
+    var studyNotes = (study.posts || study.notes || []).slice(0, 3);
+    var reading = study.reading || [];
 
     if (slot("portfolioHero")) {
       slot("portfolioHero").innerHTML = heroHtml(portfolio.hero || {}, false);
     }
 
     if (slot("projects")) {
-      slot("projects").innerHTML = (portfolio.projects || []).map(cardHtml).join("");
+      slot("projects").innerHTML = projects.map(cardHtml).join("");
+      setSectionVisible("projects", projects.length > 0);
     }
 
     if (slot("journey")) {
       if (portfolio.work) {
         slot("journey").innerHTML = workDashboardHtml(portfolio.work);
+        setSectionVisible("journey", true);
       } else {
-        slot("journey").innerHTML = (portfolio.journey || []).map(staticRowHtml).join("");
+        slot("journey").innerHTML = journey.map(staticRowHtml).join("");
+        setSectionVisible("journey", journey.length > 0);
       }
     }
 
     if (slot("archiveBoundary")) {
-      slot("archiveBoundary").innerHTML = boundaryHtml(portfolio.archiveBoundary || {});
+      slot("archiveBoundary").innerHTML = boundaryHtml(archiveBoundary);
     }
 
     if (slot("archive")) {
-      slot("archive").innerHTML = (portfolio.archive || []).map(rowHtml).join("");
+      slot("archive").innerHTML = archive.map(rowHtml).join("");
+      setSectionVisible(
+        "archive",
+        Boolean(archiveBoundary.summary) ||
+          Boolean((archiveBoundary.items || []).length) ||
+          archive.length > 0
+      );
     }
 
     if (slot("documents")) {
-      slot("documents").innerHTML = (portfolio.documents || []).map(documentHtml).join("");
+      slot("documents").innerHTML = documents.map(documentHtml).join("");
+      setSectionVisible("documents", documents.length > 0);
     }
 
     if (slot("studyHero")) {
@@ -295,7 +340,10 @@
     }
 
     if (slot("topics")) {
-      slot("topics").innerHTML = (study.topics || []).map(cardHtml).join("");
+      slot("topics").innerHTML = (study.topics || []).length
+        ? studyTopics.map(cardHtml).join("")
+        : studyTopics.map(postTopicHtml).join("");
+      setSectionVisible("topics", studyTopics.length > 0);
     }
 
     if (slot("studyQueue")) {
@@ -308,13 +356,15 @@
 
     if (slot("notes")) {
       slot("notes").innerHTML =
-        (study.posts || study.notes || []).slice(0, 3).map(function (item) {
+        studyNotes.map(function (item) {
           return item.category ? postRowHtml(item) : rowHtml(item);
         }).join("");
+      setSectionVisible("notes", studyNotes.length > 0);
     }
 
     if (slot("reading")) {
-      slot("reading").innerHTML = (study.reading || []).map(readingHtml).join("");
+      slot("reading").innerHTML = reading.map(readingHtml).join("");
+      setSectionVisible("reading", reading.length > 0);
     }
   }
 

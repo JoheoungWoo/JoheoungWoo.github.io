@@ -45,15 +45,15 @@
       </header>
 
       <div class="category-filter" aria-label="카테고리 필터">
-        <button type="button" data-filter="all" aria-pressed="true">전체</button>
-        <button type="button" data-filter="Java">Java</button>
-        <button type="button" data-filter="Backend">Backend</button>
-        <button type="button" data-filter="AI">AI</button>
-        <button type="button" data-filter="Infra">Infra</button>
-        <button type="button" data-filter="CS">CS</button>
+        <span class="loading-chip">불러오는 중</span>
       </div>
 
-      <div class="post-list" data-render="studyPosts"></div>
+      <div class="post-list" data-render="studyPosts">
+        <div class="loading-panel" role="status" aria-live="polite">
+          <span class="loading-bar"></span>
+          <p>Notion 데이터를 불러오는 중입니다.</p>
+        </div>
+      </div>
     </section>
 
   </main>
@@ -63,7 +63,7 @@
 
   <script>
     function renderStudyPosts() {
-      var buttons = document.querySelectorAll(".category-filter button");
+      var filter = document.querySelector(".category-filter");
       var postList = document.querySelector('[data-render="studyPosts"]');
       var count = document.querySelector(".post-count");
       var posts = window.STUDY_POSTS || [];
@@ -81,6 +81,32 @@
         return escapeHtml(value || "#");
       }
 
+      function categoryFilters(items) {
+        var seen = {};
+        var categories = [];
+
+        items.forEach(function (post) {
+          var category = post.category || "";
+
+          if (category && !seen[category]) {
+            seen[category] = true;
+            categories.push(category);
+          }
+        });
+
+        return ["all"].concat(categories);
+      }
+
+      function filterButtonHtml(category, index) {
+        var label = category === "all" ? "전체" : category;
+
+        return '' +
+          '<button type="button" data-filter="' + escapeHtml(category) + '"' +
+            (index === 0 ? ' aria-pressed="true"' : '') + '>' +
+            escapeHtml(label) +
+          '</button>';
+      }
+
       function postHtml(post) {
         return '' +
           '<a class="post-item" href="' + attr(post.studyHref || post.href) + '" data-category="' + escapeHtml(post.category) + '"' + (post.todo ? ' data-todo' : '') + '>' +
@@ -88,14 +114,29 @@
             '<span class="post-category">' + escapeHtml(post.category) + '</span>' +
             '<h3>' + escapeHtml(post.title) + '</h3>' +
             '<p>' + escapeHtml(post.summary) + '</p>' +
-            '<small>' + escapeHtml(post.meta || post.date) + '</small>' +
           '</a>';
+      }
+
+      if (filter) {
+        filter.innerHTML = categoryFilters(posts).map(filterButtonHtml).join("");
+      }
+
+      renderHeaderSyncedAt();
+
+      function renderHeaderSyncedAt() {
+        var syncedAt = document.querySelector('[data-render="headerSyncedAt"]');
+
+        if (syncedAt) {
+          syncedAt.textContent = "데이터 기준 " + (window.STUDY_POSTS_SYNCED_AT || "확인 불가");
+          syncedAt.hidden = false;
+        }
       }
 
       if (postList) {
         postList.innerHTML = posts.map(postHtml).join("");
       }
 
+      var buttons = document.querySelectorAll(".category-filter button");
       var postElements = document.querySelectorAll(".post-item");
 
       function applyFilter(category) {

@@ -22,7 +22,7 @@
 
 ### 1. 수동 링크
 
-가장 안전합니다. Notion 에서 공개해도 되는 페이지를 고른 뒤 사이트의 `href="#" data-todo` 를 실제 URL 로 바꾸고 `data-todo` 를 제거합니다.
+가장 안전합니다. Notion 에서 공개해도 되는 페이지를 고른 뒤 공개 데이터의 URL 필드에 실제 주소를 넣습니다. 아직 공개할 수 없는 항목은 데이터에 넣지 않습니다.
 
 ```html
 <a href="https://www.notion.so/..." class="col-d">Notion →</a>
@@ -56,6 +56,8 @@
 node scripts/notion-sync.mjs
 ```
 
+로컬과 GitHub Pages 는 같은 정적 데이터 파일을 읽습니다. 로컬에서는 위 명령을 직접 실행하고, GitHub Pages 배포에서는 GitHub Actions 가 같은 스크립트를 실행한 뒤 생성된 결과를 Pages artifact 에 포함합니다.
+
 `.env.local` 에 아래 값을 넣으면 Notion 데이터베이스를 읽어서 `assets/data/study-posts-data.js` 를 다시 생성합니다.
 
 ```env
@@ -71,7 +73,7 @@ API 버전 헤더를 바꿔야 하면 `NOTION_VERSION=2026-03-11` 처럼 지정�
 | Property | Type | Site field |
 |---|---|---|
 | `Title` | Title | 글 제목 |
-| `Category` | Select | Java, Backend, AI 등 |
+| `Category` | Select | Java 등 |
 | `Summary` | Text | 공개 요약 |
 | `PublishedAt` | Date | 표시 날짜 |
 | `Slug` | Text | `study/{slug}.html` 연결 |
