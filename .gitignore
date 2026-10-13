@@ -6,3 +6,4 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+assets/data/study-posts-data.js
