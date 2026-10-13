@@ -144,7 +144,7 @@ async function blockToNode(block) {
     const image = block.image || {};
     const url = image.type === "external"
       ? image.external?.url
-      : image.file?.url;
+      : "";
 
     if (!url) {
       return null;
