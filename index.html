@@ -46,7 +46,12 @@
 
     <div class="mode-panel portfolio-panel">
 
-      <section class="hero container" data-render="portfolioHero"></section>
+      <section class="hero container" data-render="portfolioHero">
+        <p class="eyebrow">포트폴리오</p>
+        <h1>작업한 것들을<br>하나씩 꺼내 보는<br>기록장입니다.</h1>
+        <p class="lead">프로젝트마다 무엇을 만들었고, 어떤 판단을 했고, 무엇을 배웠는지 짧게 남깁니다.</p>
+        <a href="#projects" class="primary-link">프로젝트 보기 →</a>
+      </section>
 
       <section id="projects" class="section container">
         <header class="section-header">
@@ -54,7 +59,9 @@
           <a href="#" data-todo>전체 보기 →</a>
         </header>
 
-        <div class="card-grid" data-render="projects"></div>
+        <div class="card-grid" data-render="projects">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
       </section>
 
       <section id="journey" class="section container">
@@ -63,7 +70,9 @@
           <a href="#" data-todo>전체 보기 →</a>
         </header>
 
-        <div class="list" data-render="journey"></div>
+        <div class="list" data-render="journey">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
       </section>
 
       <section id="archive" class="section container">
@@ -73,7 +82,9 @@
         </header>
 
         <div data-render="archiveBoundary"></div>
-        <div class="list archive-index" data-render="archive"></div>
+        <div class="list archive-index" data-render="archive">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
       </section>
 
       <section id="documents" class="section container">
@@ -82,7 +93,9 @@
           <a href="#" data-todo>전체 보기 →</a>
         </header>
 
-        <div class="list" data-render="documents"></div>
+        <div class="list" data-render="documents">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
       </section>
 
     </div>
@@ -90,7 +103,11 @@
 
     <div class="mode-panel study-panel">
 
-      <section class="hero container" data-render="studyHero"></section>
+      <section class="hero container" data-render="studyHero">
+        <p class="eyebrow">학습</p>
+        <h1>공부한 것을<br>다시 꺼내 보기 쉽게<br>쌓아 둡니다.</h1>
+        <p class="lead">주제별 목차와 최근 노트를 먼저 보여주고, 긴 정리는 Notion에서 이어 봅니다.</p>
+      </section>
 
       <section id="topics" class="section container">
         <header class="section-header">
@@ -98,7 +115,9 @@
           <a href="./study/">전체 보기 →</a>
         </header>
 
-        <div class="card-grid" data-render="topics"></div>
+        <div class="card-grid" data-render="topics">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
         <p class="note" data-render="studyQueue"></p>
       </section>
 
@@ -108,7 +127,9 @@
           <a href="./study/">전체 보기 →</a>
         </header>
 
-        <div class="list" data-render="notes"></div>
+        <div class="list" data-render="notes">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
       </section>
 
       <section id="reading" class="section container">
@@ -117,7 +138,9 @@
           <a href="./study/">전체 보기 →</a>
         </header>
 
-        <div class="list" data-render="reading"></div>
+        <div class="list" data-render="reading">
+          <p class="note">데이터가 없습니다.</p>
+        </div>
       </section>
 
     </div>
@@ -132,7 +155,6 @@
       var seed = Date.now();
 
       var scripts = [
-        "./assets/data/public/site-copy.js",
         "./assets/data/generated/study-posts-data.js"
       ];
 
@@ -141,22 +163,10 @@
 
         if (index >= scripts.length) {
           window.SITE_DATA = {
-            portfolio: Object.assign(
-              {},
-              window.PORTFOLIO_DATA || {},
-              {
-                archiveBoundary: (window.ARCHIVE_DATA || {}).boundary,
-                archive: (window.ARCHIVE_DATA || {}).archive,
-                documents: (window.ARCHIVE_DATA || {}).documents
-              }
-            ),
-            study: Object.assign(
-              {},
-              window.STUDY_DATA || {},
-              {
-                posts: window.STUDY_POSTS || []
-              }
-            )
+            portfolio: {},
+            study: {
+              posts: window.STUDY_POSTS || []
+            }
           };
 
           script = document.createElement("script");

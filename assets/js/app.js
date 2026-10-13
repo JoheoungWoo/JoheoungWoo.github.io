@@ -35,17 +35,18 @@
     return document.querySelector('[data-render="' + name + '"]');
   }
 
-  function setSectionVisible(name, visible) {
-    var target = slot(name);
-    var section = target && target.closest(".section");
-
-    if (section) {
-      section.hidden = !visible;
-    }
-  }
-
-
   /* 데이터 렌더링 -------------------------------------- */
+
+  function hasHeroContent(hero) {
+    return Boolean(
+      hero &&
+      (hero.eyebrow ||
+        hero.lead ||
+        hero.link ||
+        (hero.title || []).length ||
+        (hero.stats || []).length)
+    );
+  }
 
   function heroHtml(hero, withStats) {
     var title = (hero.title || [])
@@ -297,74 +298,62 @@
     var studyNotes = (study.posts || study.notes || []).slice(0, 3);
     var reading = study.reading || [];
 
-    if (slot("portfolioHero")) {
+    if (slot("portfolioHero") && hasHeroContent(portfolio.hero)) {
       slot("portfolioHero").innerHTML = heroHtml(portfolio.hero || {}, false);
     }
 
-    if (slot("projects")) {
+    if (slot("projects") && projects.length) {
       slot("projects").innerHTML = projects.map(cardHtml).join("");
-      setSectionVisible("projects", projects.length > 0);
     }
 
     if (slot("journey")) {
       if (portfolio.work) {
         slot("journey").innerHTML = workDashboardHtml(portfolio.work);
-        setSectionVisible("journey", true);
-      } else {
+      } else if (journey.length) {
         slot("journey").innerHTML = journey.map(staticRowHtml).join("");
-        setSectionVisible("journey", journey.length > 0);
       }
     }
 
-    if (slot("archiveBoundary")) {
+    if (
+      slot("archiveBoundary") &&
+      (archiveBoundary.summary || (archiveBoundary.items || []).length)
+    ) {
       slot("archiveBoundary").innerHTML = boundaryHtml(archiveBoundary);
     }
 
-    if (slot("archive")) {
+    if (slot("archive") && archive.length) {
       slot("archive").innerHTML = archive.map(rowHtml).join("");
-      setSectionVisible(
-        "archive",
-        Boolean(archiveBoundary.summary) ||
-          Boolean((archiveBoundary.items || []).length) ||
-          archive.length > 0
-      );
     }
 
-    if (slot("documents")) {
+    if (slot("documents") && documents.length) {
       slot("documents").innerHTML = documents.map(documentHtml).join("");
-      setSectionVisible("documents", documents.length > 0);
     }
 
-    if (slot("studyHero")) {
+    if (slot("studyHero") && hasHeroContent(study.hero)) {
       slot("studyHero").innerHTML = heroHtml(study.hero || {}, true);
     }
 
-    if (slot("topics")) {
+    if (slot("topics") && studyTopics.length) {
       slot("topics").innerHTML = (study.topics || []).length
         ? studyTopics.map(cardHtml).join("")
         : studyTopics.map(postTopicHtml).join("");
-      setSectionVisible("topics", studyTopics.length > 0);
     }
 
     if (slot("studyQueue")) {
       if (study.queue) {
         slot("studyQueue").textContent = study.queue;
-      } else {
-        slot("studyQueue").hidden = true;
       }
     }
 
-    if (slot("notes")) {
+    if (slot("notes") && studyNotes.length) {
       slot("notes").innerHTML =
         studyNotes.map(function (item) {
           return item.category ? postRowHtml(item) : rowHtml(item);
         }).join("");
-      setSectionVisible("notes", studyNotes.length > 0);
     }
 
-    if (slot("reading")) {
+    if (slot("reading") && reading.length) {
       slot("reading").innerHTML = reading.map(readingHtml).join("");
-      setSectionVisible("reading", reading.length > 0);
     }
   }
 
@@ -375,22 +364,6 @@
 
     if (window.SITE_DATA) {
       renderHome(window.SITE_DATA);
-      return Promise.resolve();
-    }
-
-    if (window.PORTFOLIO_DATA || window.STUDY_DATA || window.ARCHIVE_DATA) {
-      renderHome({
-        portfolio: Object.assign(
-          {},
-          window.PORTFOLIO_DATA || {},
-          {
-            archiveBoundary: (window.ARCHIVE_DATA || {}).boundary,
-            archive: (window.ARCHIVE_DATA || {}).archive,
-            documents: (window.ARCHIVE_DATA || {}).documents
-          }
-        ),
-        study: window.STUDY_DATA || {}
-      });
       return Promise.resolve();
     }
 
