@@ -8,7 +8,7 @@ loadEnvFile(path.join(root, ".env"));
 const token = process.env.NOTION_TOKEN;
 const dataSourceId = process.env.NOTION_DATA_SOURCE_ID;
 const legacyDatabaseId = process.env.NOTION_DATABASE_ID;
-const outputPath = process.env.NOTION_OUTPUT || "assets/data/study-posts-data.js";
+const outputPath = process.env.NOTION_OUTPUT || "assets/data/generated/study-posts-data.js";
 const visibilityValue = process.env.NOTION_VISIBILITY_VALUE || "Public";
 
 if (!token) {

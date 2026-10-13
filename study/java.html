@@ -166,7 +166,7 @@
     (function () {
       var seed = Date.now();
       var scripts = [
-        "../assets/data/study-posts-data.js?v=" + seed,
+        "../assets/data/generated/study-posts-data.js?v=" + seed,
         "../assets/js/app.js?v=" + seed
       ];
 
@@ -181,6 +181,9 @@
         script = document.createElement("script");
         script.src = scripts[index];
         script.onload = function () {
+          loadScript(index + 1);
+        };
+        script.onerror = function () {
           loadScript(index + 1);
         };
         document.body.appendChild(script);

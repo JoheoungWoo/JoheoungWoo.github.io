@@ -58,7 +58,7 @@ node scripts/notion-sync.mjs
 
 로컬과 GitHub Pages 는 같은 정적 데이터 파일을 읽습니다. 로컬에서는 위 명령을 직접 실행하고, GitHub Pages 배포에서는 GitHub Actions 가 같은 스크립트를 실행한 뒤 생성된 결과를 Pages artifact 에 포함합니다.
 
-`.env.local` 에 아래 값을 넣으면 Notion 데이터베이스를 읽어서 `assets/data/study-posts-data.js` 를 다시 생성합니다.
+`.env.local` 에 아래 값을 넣으면 Notion 데이터베이스를 읽어서 `assets/data/generated/study-posts-data.js` 를 다시 생성합니다.
 
 ```env
 NOTION_TOKEN=secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
