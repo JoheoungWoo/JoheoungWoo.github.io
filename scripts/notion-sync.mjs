@@ -9,6 +9,13 @@ const token = process.env.NOTION_TOKEN;
 const dataSourceId = process.env.NOTION_DATA_SOURCE_ID;
 const legacyDatabaseId = process.env.NOTION_DATABASE_ID;
 const outputPath = process.env.NOTION_OUTPUT || "assets/data/generated/study-posts-data.js";
+const outputFile = path.join(root, outputPath);
+const outputDir = path.dirname(outputFile);
+const imageOutputDir = path.join(outputDir, "images");
+const imagePublicPath = path.posix.join(
+  path.posix.dirname(outputPath.replace(/\\/g, "/")),
+  "images"
+);
 const visibilityValue = process.env.NOTION_VISIBILITY_VALUE || "Public";
 
 if (!token) {
@@ -40,8 +47,8 @@ const out = [
   ";\n"
 ].join("");
 
-fs.mkdirSync(path.dirname(path.join(root, outputPath)), { recursive: true });
-fs.writeFileSync(path.join(root, outputPath), out, "utf8");
+fs.mkdirSync(outputDir, { recursive: true });
+fs.writeFileSync(outputFile, out, "utf8");
 
 console.log(`Synced ${posts.length} Notion pages to ${outputPath}`);
 
@@ -142,9 +149,13 @@ async function blockToNode(block) {
 
   if (block.type === "image") {
     const image = block.image || {};
-    const url = image.type === "external"
-      ? image.external?.url
-      : "";
+    let url = "";
+
+    if (image.type === "external") {
+      url = image.external?.url || "";
+    } else if (image.type === "file") {
+      url = await downloadNotionImage(image.file?.url, block.id);
+    }
 
     if (!url) {
       return null;
@@ -210,6 +221,58 @@ async function notionFetch(url, options) {
   }
 
   return response.json();
+}
+
+async function downloadNotionImage(sourceUrl, blockId) {
+  if (!sourceUrl) {
+    return "";
+  }
+
+  const response = await fetch(sourceUrl);
+
+  if (!response.ok) {
+    fail(`Notion 이미지 다운로드 실패 (${response.status})`);
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  const filename = `${safeFileName(blockId)}${imageExtension(sourceUrl, contentType)}`;
+  const filePath = path.join(imageOutputDir, filename);
+
+  fs.mkdirSync(imageOutputDir, { recursive: true });
+  fs.writeFileSync(filePath, Buffer.from(await response.arrayBuffer()));
+
+  return path.posix.join("../", imagePublicPath, filename);
+}
+
+function imageExtension(sourceUrl, contentType) {
+  try {
+    const extension = path.extname(new URL(sourceUrl).pathname).toLowerCase();
+
+    if (/^\.(png|jpe?g|gif|webp|svg|avif)$/.test(extension)) {
+      return extension;
+    }
+  } catch {
+    // Fall back to content-type below.
+  }
+
+  const mime = contentType.split(";")[0].trim().toLowerCase();
+  const extensions = {
+    "image/png": ".png",
+    "image/jpeg": ".jpg",
+    "image/gif": ".gif",
+    "image/webp": ".webp",
+    "image/svg+xml": ".svg",
+    "image/avif": ".avif"
+  };
+
+  return extensions[mime] || ".img";
+}
+
+function safeFileName(value) {
+  return String(value || "notion-image")
+    .trim()
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "notion-image";
 }
 
 function readPlain(prop) {
