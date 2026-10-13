@@ -6,4 +6,8 @@ Thumbs.db
 .env
 .env.*
 !.env.example
-assets/data/study-posts-data.js
+
+# Generated or local-only data should not be committed by default.
+assets/data/*
+!assets/data/public/
+!assets/data/public/**
