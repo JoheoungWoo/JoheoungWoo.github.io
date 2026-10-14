@@ -25,7 +25,7 @@
 
   mountLoadingShell();
   loadScripts([
-    root + "assets/data/generated/study-posts-data.js?v=" + Date.now(),
+    studyDataSource() + "?v=" + Date.now(),
     root + "assets/js/app.js?v=" + Date.now()
   ], renderStudyArticle);
 
@@ -179,6 +179,18 @@
       };
       document.body.appendChild(script);
     }
+  }
+
+  function studyDataSource() {
+    var dataMode = "live";
+
+    try {
+      dataMode = localStorage.getItem("dataMode") || dataMode;
+    } catch (e) {}
+
+    return dataMode === "dummy"
+      ? root + "assets/data/public/study-dummy.js"
+      : root + "assets/data/generated/study-posts-data.js";
   }
 
   function nodeId(prefix, index) {

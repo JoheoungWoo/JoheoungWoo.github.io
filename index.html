@@ -154,16 +154,30 @@
     (function () {
       var seed = Date.now();
 
-      var scripts = [
-        "./assets/data/generated/study-posts-data.js"
-      ];
+      var dataMode = "live";
+      var scripts;
+
+      try {
+        dataMode = localStorage.getItem("dataMode") || dataMode;
+      } catch (e) {}
+
+      scripts = dataMode === "dummy"
+        ? [
+            "./assets/data/public/portfolio-dummy.js",
+            "./assets/data/public/study-dummy.js"
+          ]
+        : [
+            "./assets/data/generated/study-posts-data.js"
+          ];
 
       function loadScript(index) {
         var script;
 
         if (index >= scripts.length) {
           window.SITE_DATA = {
-            portfolio: {},
+            portfolio: dataMode === "dummy"
+              ? (window.PORTFOLIO_DUMMY_DATA || {})
+              : {},
             study: {
               posts: window.STUDY_POSTS || []
             }

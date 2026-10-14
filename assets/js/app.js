@@ -472,7 +472,14 @@
 
   dataModeButtons.forEach(function (button) {
     button.addEventListener("click", function () {
-      setDataMode(button.dataset.dataMode);
+      var nextDataMode = button.dataset.dataMode;
+      var currentDataMode = root.getAttribute("data-data-mode") || "live";
+
+      setDataMode(nextDataMode);
+
+      if (nextDataMode !== currentDataMode) {
+        window.location.reload();
+      }
     });
   });
 

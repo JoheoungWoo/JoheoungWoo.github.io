@@ -248,8 +248,16 @@
 
     (function () {
       var seed = Date.now();
+      var dataMode = "live";
+
+      try {
+        dataMode = localStorage.getItem("dataMode") || dataMode;
+      } catch (e) {}
+
       var scripts = [
-        "../assets/data/generated/study-posts-data.js?v=" + seed,
+        (dataMode === "dummy"
+          ? "../assets/data/public/study-dummy.js?v="
+          : "../assets/data/generated/study-posts-data.js?v=") + seed,
         "../assets/js/app.js?v=" + seed
       ];
 

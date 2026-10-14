@@ -83,8 +83,8 @@
       '<div class="dev-controls">' +
         '<p>Dev</p>' +
         '<div class="dev-switch" role="group" aria-label="데이터 모드">' +
-          '<button type="button" data-data-mode="dummy">더미모드</button>' +
           '<button type="button" data-data-mode="live">실시간모드</button>' +
+          '<button type="button" data-data-mode="dummy">더미모드</button>' +
         '</div>' +
       '</div>';
 
