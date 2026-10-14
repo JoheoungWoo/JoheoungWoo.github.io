@@ -10,8 +10,11 @@
   var modeButtons =
     document.querySelectorAll(".mode-switch button");
 
-  var themeButton =
-    document.getElementById("theme-toggle");
+  var themeButtons =
+    document.querySelectorAll("[data-theme-choice]");
+
+  var dataModeButtons =
+    document.querySelectorAll("[data-data-mode]");
 
 
   function escapeHtml(value) {
@@ -403,15 +406,53 @@
 
     root.setAttribute("data-theme", theme);
 
-    if (themeButton) {
-      themeButton.textContent =
-        theme === "dark" ? "밝게" : "어둡게";
-    }
+    themeButtons.forEach(function (button) {
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.themeChoice === theme)
+      );
+    });
 
     try {
       localStorage.setItem("theme", theme);
     } catch (e) {}
   }
+
+  function updateHeaderDataTime(value) {
+
+    var syncedAt = document.querySelector('[data-render="headerSyncedAt"]');
+    var dataMode = root.getAttribute("data-data-mode") || "live";
+
+    if (!syncedAt) {
+      return;
+    }
+
+    syncedAt.textContent =
+      dataMode === "dummy"
+        ? "데이터 기준 : 더미모드"
+        : "데이터 기준 " + (value || window.STUDY_POSTS_SYNCED_AT || "확인 불가");
+    syncedAt.hidden = false;
+  }
+
+  function setDataMode(dataMode) {
+
+    root.setAttribute("data-data-mode", dataMode);
+
+    dataModeButtons.forEach(function (button) {
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.dataMode === dataMode)
+      );
+    });
+
+    try {
+      localStorage.setItem("dataMode", dataMode);
+    } catch (e) {}
+
+    updateHeaderDataTime();
+  }
+
+  window.updateHeaderDataTime = updateHeaderDataTime;
 
 
   /* 이벤트 -------------------------------------------- */
@@ -423,15 +464,17 @@
     });
   });
 
-  if (themeButton) {
-    themeButton.addEventListener("click", function () {
-      setTheme(
-        root.getAttribute("data-theme") === "dark"
-          ? "light"
-          : "dark"
-      );
+  themeButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      setTheme(button.dataset.themeChoice);
     });
-  }
+  });
+
+  dataModeButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      setDataMode(button.dataset.dataMode);
+    });
+  });
 
 
   function bindTodoLinks() {
@@ -458,6 +501,7 @@
 
   var mode = "portfolio";
   var theme = "light";
+  var dataMode = "live";
 
   try {
     if (modeButtons.length) {
@@ -471,6 +515,8 @@
       (window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light");
+
+    dataMode = localStorage.getItem("dataMode") || dataMode;
   } catch (e) {}
 
   loadHomeData().then(bindTodoLinks);
@@ -480,6 +526,7 @@
   }
 
   setTheme(theme);
+  setDataMode(dataMode);
   bindTodoLinks();
 
 })();

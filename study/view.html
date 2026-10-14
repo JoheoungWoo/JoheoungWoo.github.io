@@ -214,6 +214,11 @@
       function renderHeaderSyncedAt() {
         var syncedAt = document.querySelector('[data-render="headerSyncedAt"]');
 
+        if (window.updateHeaderDataTime) {
+          window.updateHeaderDataTime();
+          return;
+        }
+
         if (syncedAt) {
           syncedAt.textContent = "데이터 기준 " + (window.STUDY_POSTS_SYNCED_AT || "확인 불가");
           syncedAt.hidden = false;

@@ -66,26 +66,55 @@
       document.documentElement.getAttribute("data-mode") || "portfolio";
 
     var controls =
-      '<div class="mode-switch">' +
-        '<a href="' + root + '" aria-pressed="' + (currentMode === "portfolio") + '">포트폴리오</a>' +
-        '<a href="' + root + 'study/" aria-pressed="' + (currentMode === "study") + '">학습</a>' +
+      '<div class="header-control-group">' +
+        '<p>Mode</p>' +
+        '<div class="mode-switch">' +
+          '<a href="' + root + '" aria-pressed="' + (currentMode === "portfolio") + '">포트폴리오</a>' +
+          '<a href="' + root + 'study/" aria-pressed="' + (currentMode === "study") + '">학습</a>' +
+        '</div>' +
+      '</div>' +
+      '<div class="header-control-group">' +
+        '<p>Etc</p>' +
+        '<div class="theme-switch" role="group" aria-label="화면 테마">' +
+          '<button type="button" data-theme-choice="light">밝게</button>' +
+          '<button type="button" data-theme-choice="dark">어둡게</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="dev-controls">' +
+        '<p>Dev</p>' +
+        '<div class="dev-switch" role="group" aria-label="데이터 모드">' +
+          '<button type="button" data-data-mode="dummy">더미모드</button>' +
+          '<button type="button" data-data-mode="live">실시간모드</button>' +
+        '</div>' +
       '</div>';
 
     return '' +
       '<header class="header">' +
         '<div class="container header-inner">' +
 
-          '<a href="' + root + '" class="brand">CH</a>' +
+          '<div class="header-home">' +
+            '<a href="' + root + '" class="brand">CH</a>' +
+          '</div>' +
 
-          (navType === "study-list"
-            ? navHtml(navStudyList, "nav-custom", true, true)
-            : navHtml(navPortfolio, "nav-portfolio", onHome) +
-              navHtml(navStudy, "nav-study", onHome)) +
-
-          '<div class="header-controls">' +
+          '<div class="header-data">' +
             '<span class="header-data-time" data-render="headerSyncedAt" hidden></span>' +
-            controls +
-            '<button id="theme-toggle" aria-label="다크 모드 전환">어둡게</button>' +
+          '</div>' +
+
+          '<button class="mobile-menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-menu">' +
+            '<span></span><span></span><span></span>' +
+          '</button>' +
+
+          '<div class="header-menu" id="site-menu">' +
+            '<div class="header-nav-area">' +
+              (navType === "study-list"
+                ? navHtml(navStudyList, "nav-custom", true, true)
+                : navHtml(navPortfolio, "nav-portfolio", onHome) +
+                  navHtml(navStudy, "nav-study", onHome)) +
+            '</div>' +
+
+            '<div class="header-controls">' +
+              controls +
+            '</div>' +
           '</div>' +
 
         '</div>' +
@@ -144,6 +173,39 @@
     headerSlot.outerHTML = headerHtml({
       home: headerSlot.dataset.home === "true",
       nav: headerSlot.dataset.nav || ""
+    });
+  }
+
+  var header = document.querySelector(".header");
+  var menuButton = document.querySelector(".mobile-menu-toggle");
+  var menu = document.getElementById("site-menu");
+
+  if (header && menuButton && menu) {
+    menuButton.addEventListener("click", function () {
+      var isOpen = header.classList.toggle("is-menu-open");
+
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "메뉴 닫기" : "메뉴 열기");
+    });
+
+    menu.addEventListener("click", function (event) {
+      if (event.target.tagName !== "A") {
+        return;
+      }
+
+      header.classList.remove("is-menu-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "메뉴 열기");
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      header.classList.remove("is-menu-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "메뉴 열기");
     });
   }
 
